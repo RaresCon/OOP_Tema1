@@ -5,6 +5,7 @@ import fileio.CardInput;
 public class Minion extends Card {
     private int attackStat;
     private int healthStat;
+    private boolean frozenStat = false;
     private CardType minionType;
 
     public Minion(CardInput cardInput, CardType cardType) {
@@ -35,6 +36,14 @@ public class Minion extends Card {
 
     public CardType getCardType() {
         return minionType;
+    }
+
+    public void setFrozenStat(boolean frozenStat) {
+        this.frozenStat = frozenStat;
+    }
+
+    public boolean isFrozenStat() {
+        return frozenStat;
     }
 
     @Override

@@ -71,7 +71,7 @@ public final class Main {
         ArrayNode output = objectMapper.createArrayNode();
 
         //TODO add here the entry point to your implementation
-        Table.getTableInstance().loagInputToGame(inputData);
+        Table.getTableInstance().playGame(inputData);
 
         ObjectWriter objectWriter = objectMapper.writerWithDefaultPrettyPrinter();
         objectWriter.writeValue(new File(filePath2), output);

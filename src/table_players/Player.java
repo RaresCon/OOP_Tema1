@@ -13,6 +13,7 @@ import static cards.CardType.*;
 public class Player {
     private int mana = 1;
     private List<Card> deck = new ArrayList<>();
+    private List<Card> cardsInHand = new ArrayList<>();
     private Hero playerHero;
 
     public void setMana(int mana) {
@@ -99,5 +100,9 @@ public class Player {
 
     public Hero getPlayerHero() {
         return playerHero;
+    }
+
+    public List<Card> getCardsInHand() {
+        return cardsInHand;
     }
 }
