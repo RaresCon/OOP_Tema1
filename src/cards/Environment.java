@@ -3,21 +3,22 @@ package cards;
 import fileio.CardInput;
 
 public class Environment extends Card{
-    private CardType environmentType;
+    private EnvironmentType environmentType;
 
-    public Environment(CardInput cardInput, CardType cardType) {
+    public Environment(CardInput cardInput, CardType cardType, EnvironmentType environmentType) {
         name = cardInput.getName();
         description = cardInput.getDescription();
         mana = cardInput.getMana();
         colors = cardInput.getColors();
-        environmentType = cardType;
+        this.cardType = cardType;
+        this.environmentType = environmentType;
     }
 
-    public CardType getEnvironmentType() {
+    public EnvironmentType getEnvironmentType() {
         return environmentType;
     }
 
-    public void setEnvironmentType(CardType environmentType) {
+    public void setEnvironmentType(EnvironmentType environmentType) {
         this.environmentType = environmentType;
     }
 

@@ -1,20 +1,19 @@
 package table_players;
 
-import actions.Action;
-import cards.Card;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import errors.Error;
 import fileio.ActionsInput;
 import fileio.GameInput;
 import fileio.Input;
 import fileio.StartGameInput;
 
+import javax.annotation.processing.SupportedSourceVersion;
 import java.util.*;
 
-public class Table {
-    private static Table instance = null;
-    private static int playerOneWins = 0;
-    private static int playerTwoWins = 0;
-    private static int gamesPlayed = 0;
+import static errors.Error.*;
 
+public final class Table {
+    private static Table instance = null;
 
     private Table() {}
 
@@ -25,45 +24,74 @@ public class Table {
         return instance;
     }
 
-    public void playGame(Input input) {
-        Player playerOne = new Player();
-        Player playerTwo = new Player();
-        List<List<Card>> playerOneRows = new ArrayList<>();
-        List<List<Card>> playerTwoRows = new ArrayList<>();
+    public void playGame(Input input, ArrayNode output) {
+        GameConfig gameConfig = new GameConfig();
 
         int numRows = 2;
-        for (int i = 0; i < numRows; i++) {
-            playerOneRows.add(new ArrayList<>());
-            playerTwoRows.add(new ArrayList<>());
-        }
+        gameConfig.initRows(gameConfig.getPlayerOne(), gameConfig.getPlayerTwo(), numRows);
 
         for (GameInput gameInput : input.getGames()) {
-            int manaIncrement = 1;
-            List<Action> actionList = Action.loadActions(gameInput.getActions());
-            int activePlayer = gameInput.getStartGame().getStartingPlayer();
-            int actionIterator = 0;
+            if (gameInput.getStartGame().getStartingPlayer() == 1)
+                gameConfig.setActivePlayer(gameConfig.getPlayerOne());
+            else
+                gameConfig.setActivePlayer(gameConfig.getPlayerTwo());
 
-            readyPlayersForGames(playerOne, playerTwo, input, gameInput.getStartGame());
-            //System.out.println(playerOne.getDeck());
-            //System.out.println(playerTwo.getDeck());
+            readyPlayersForGames(gameConfig, input, gameInput.getStartGame());
+            System.out.println(gameConfig.getActivePlayer());
 
-            while (playerOne.getPlayerHero().getHealthStat() != 0 && playerTwo.getPlayerHero().getHealthStat() != 0) {
-                playerOne.setMana(manaIncrement);
-                playerTwo.setMana(manaIncrement);
-
-
-            }
+            for (ActionsInput action : gameInput.getActions())
+                switch (action.getCommand()) {
+                    case "endPlayerTurn":
+                        break;
+                    case "placeCard":
+                        break;
+                    case "cardUsesAttack":
+                        break;
+                    case "cardUsesAbility":
+                        break;
+                    case "useAttackHero":
+                        break;
+                    case "useHeroAbility":
+                        break;
+                    case "useEnvironmentCard":
+                        break;
+                    case "getCardsInHand":
+                        break;
+                    case "getPlayerDeck":
+                        break;
+                    case "getCardsOnTable":
+                        break;
+                    case "getPlayerTurn":
+                        break;
+                    case "getPlayerHero":
+                        break;
+                    case "getCardAtPosition":
+                        break;
+                    case "getPlayerMana":
+                        break;
+                    case "getEnvironmentCardsInHand":
+                        break;
+                    case "getFrozenCardsOnTable":
+                        break;
+                    case "getTotalGamesPlayed":
+                        break;
+                    case "getPlayerOneWins":
+                        break;
+                    case "getPlayerTwoWins":
+                    default:
+                        break;
+                }
         }
     }
 
-    public void readyPlayersForGames(Player playerOne, Player playerTwo, Input input, StartGameInput gameInput) {
-        playerOne.setDeck(input.getPlayerOneDecks(), gameInput.getPlayerOneDeckIdx());
-        playerTwo.setDeck(input.getPlayerTwoDecks(), gameInput.getPlayerTwoDeckIdx());
-        playerOne.setPlayerHero(gameInput.getPlayerOneHero());
-        playerTwo.setPlayerHero(gameInput.getPlayerTwoHero());
+    public void readyPlayersForGames(GameConfig gameConfig, Input input, StartGameInput gameInput) {
+        gameConfig.getPlayerOne().setDeck(input.getPlayerOneDecks(), gameInput.getPlayerOneDeckIdx());
+        gameConfig.getPlayerTwo().setDeck(input.getPlayerTwoDecks(), gameInput.getPlayerTwoDeckIdx());
+        gameConfig.getPlayerOne().setPlayerHero(gameInput.getPlayerOneHero());
+        gameConfig.getPlayerTwo().setPlayerHero(gameInput.getPlayerTwoHero());
 
         Random rndSeed = new Random(gameInput.getShuffleSeed());
-        Collections.shuffle(playerOne.getDeck(), rndSeed);
-        Collections.shuffle(playerTwo.getDeck(), rndSeed);
+        Collections.shuffle(gameConfig.getPlayerOne().getDeck(), rndSeed);
+        Collections.shuffle(gameConfig.getPlayerTwo().getDeck(), rndSeed);
     }
 }

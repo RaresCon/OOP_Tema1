@@ -9,12 +9,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static cards.CardType.*;
+import static cards.MinionType.*;
+import static cards.HeroType.*;
+import static cards.EnvironmentType.*;
 
 public class Player {
     private int mana = 1;
+    private int gameWins = 0;
     private List<Card> deck = new ArrayList<>();
     private List<Card> cardsInHand = new ArrayList<>();
     private Hero playerHero;
+    private List<List<Minion>> playerRows = new ArrayList<>();
 
     public void setMana(int mana) {
         this.mana = mana;
@@ -28,47 +33,47 @@ public class Player {
             for (CardInput cardInput : decksInput.getDecks().get(index)) {
                 switch (cardInput.getName()) {
                     case "Sentinel":
-                        deck.add(new Minion(cardInput, SENTINEL));
+                        deck.add(new Minion(cardInput, MINION, SENTINEL));
                         break;
 
                     case "Berserker":
-                        deck.add(new Minion(cardInput, BERSERKER));
+                        deck.add(new Minion(cardInput, MINION, BERSERKER));
                         break;
 
                     case "Goliath":
-                        deck.add(new Minion(cardInput, GOLIATH));
+                        deck.add(new Minion(cardInput, MINION, GOLIATH));
                         break;
 
                     case "Warden":
-                        deck.add(new Minion(cardInput, WARDEN));
+                        deck.add(new Minion(cardInput, MINION, WARDEN));
                         break;
 
                     case "The Ripper":
-                        deck.add(new Minion(cardInput, RIPPER));
+                        deck.add(new Minion(cardInput, MINION, RIPPER));
                         break;
 
                     case "Miraj":
-                        deck.add(new Minion(cardInput, MIRAJ));
+                        deck.add(new Minion(cardInput, MINION, MIRAJ));
                         break;
 
                     case "The Cursed One":
-                        deck.add(new Minion(cardInput, CURSED));
+                        deck.add(new Minion(cardInput, MINION, CURSED));
                         break;
 
                     case "Disciple":
-                        deck.add(new Minion(cardInput, DISCIPLE));
+                        deck.add(new Minion(cardInput, MINION, DISCIPLE));
                         break;
 
                     case "Firestorm":
-                        deck.add(new Environment(cardInput, FIRESTORM));
+                        deck.add(new Environment(cardInput, ENVIRONMENT, FIRESTORM));
                         break;
 
                     case "Winterfell":
-                        deck.add(new Environment(cardInput, WINTERFELL));
+                        deck.add(new Environment(cardInput, ENVIRONMENT, WINTERFELL));
                         break;
 
                     case "Heart Hound":
-                        deck.add(new Environment(cardInput, HEARTHOUND));
+                        deck.add(new Environment(cardInput, ENVIRONMENT, HEARTHOUND));
                         break;
                 }
             }
@@ -81,19 +86,19 @@ public class Player {
     public void setPlayerHero(CardInput cardInput) {
         switch (cardInput.getName()) {
             case "Lord Royce":
-                playerHero = new Hero(cardInput, ROYCE);
+                playerHero = new Hero(cardInput, HERO, ROYCE);
                 break;
 
             case "Empress Thorina":
-                playerHero = new Hero(cardInput, THORINA);
+                playerHero = new Hero(cardInput, HERO, THORINA);
                 break;
 
             case "King Mudface":
-                playerHero = new Hero(cardInput, MUDFACE);
+                playerHero = new Hero(cardInput, HERO, MUDFACE);
                 break;
 
             case "General Kocioraw":
-                playerHero = new Hero(cardInput, KOCIORAW);
+                playerHero = new Hero(cardInput, HERO, KOCIORAW);
                 break;
         }
     }
@@ -104,5 +109,21 @@ public class Player {
 
     public List<Card> getCardsInHand() {
         return cardsInHand;
+    }
+
+    public int getGameWins() {
+        return gameWins;
+    }
+
+    public void setGameWins(int gameWins) {
+        this.gameWins = gameWins;
+    }
+
+    public List<List<Minion>> getPlayerRows() {
+        return playerRows;
+    }
+
+    public void setPlayerRows(List<List<Minion>> playerRows) {
+        this.playerRows = playerRows;
     }
 }

@@ -7,6 +7,7 @@ public abstract class Card {
     protected String description;
     protected List<String> colors;
     protected int mana;
+    protected CardType cardType;
 
     public String getName() {
         return name;
@@ -38,5 +39,13 @@ public abstract class Card {
 
     public void setMana(int mana) {
         this.mana = mana;
+    }
+
+    public CardType getCardType() {
+        return cardType;
+    }
+
+    public void setCardType(CardType cardType) {
+        this.cardType = cardType;
     }
 }
