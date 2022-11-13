@@ -1,7 +1,8 @@
 package errors;
 
 public enum Error {
-    PLACE_ERR("Cannot place environment card on table."),
+    PLACE_ENV_ERR("Cannot place environment card on table."),
+    ROW_ERR("Cannot place card on table since row is full."),
     MANA_ERR("Not enough mana to place card on table.");
     private final String description;
 

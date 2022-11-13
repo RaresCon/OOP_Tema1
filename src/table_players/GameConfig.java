@@ -10,6 +10,7 @@ public class GameConfig {
     private Player playerTwo = new Player();
     private Player activePlayer = null;
     private int manaIncrement = 1;
+    private int turnsNum;
 
     public void initRows(Player playerOne, Player playerTwo, int numRows) {
         for (int i = 0; i < numRows; i++) {
@@ -48,5 +49,13 @@ public class GameConfig {
 
     public void setManaIncrement(int manaIncrement) {
         this.manaIncrement = manaIncrement;
+    }
+
+    public int getTurnsNum() {
+        return turnsNum;
+    }
+
+    public void setTurnsNum(int turnsNum) {
+        this.turnsNum = turnsNum;
     }
 }

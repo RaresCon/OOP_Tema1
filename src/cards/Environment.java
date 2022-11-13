@@ -24,7 +24,7 @@ public class Environment extends Card{
 
     @Override
     public String toString() {
-        return "CardInput{"
+        return "Environment{"
                 +  "mana="
                 + mana
                 +  ", description='"

@@ -1,6 +1,8 @@
 package table_players;
 
+import actions.Action;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import debug_commands.Debug;
 import fileio.ActionsInput;
 import fileio.GameInput;
@@ -8,7 +10,7 @@ import fileio.Input;
 import fileio.StartGameInput;
 import stats_commands.Stats;
 
-import java.util.*;;
+import java.util.*;
 
 public final class Table {
     private static Table instance = null;
@@ -29,25 +31,27 @@ public final class Table {
         gameConfig.initRows(gameConfig.getPlayerOne(), gameConfig.getPlayerTwo(), numRows);
 
         for (GameInput gameInput : input.getGames()) {
+            gameConfig.setTurnsNum(0);
+            System.out.println("NEW MATCH " + gameConfig.getPlayerTwo().getMana());
+
             if (gameInput.getStartGame().getStartingPlayer() == 1)
                 gameConfig.setActivePlayer(gameConfig.getPlayerOne());
             else
                 gameConfig.setActivePlayer(gameConfig.getPlayerTwo());
 
             readyPlayersForGames(gameConfig, input, gameInput.getStartGame());
-
-            gameConfig.getPlayerOne().getCardsInHand().add(gameConfig.getPlayerOne().getDeck().get(0));
-            gameConfig.getPlayerOne().getDeck().remove(0);
-
-            gameConfig.getPlayerTwo().getCardsInHand().add(gameConfig.getPlayerTwo().getDeck().get(0));
-            gameConfig.getPlayerTwo().getDeck().remove(0);
+            System.out.println("NEW MATCH AFTER EQUAL " + gameConfig.getPlayerTwo().getMana());
 
             for (ActionsInput action : gameInput.getActions())
                 switch (action.getCommand()) {
                         // ACTIONS
                     case "endPlayerTurn":
+                        Action.endPlayerTurn(gameConfig);
                         break;
                     case "placeCard":
+                        ObjectNode possibleError = Action.placeCard(action, gameConfig);
+                        if (possibleError != null)
+                            output.add(Action.placeCard(action, gameConfig));
                         break;
                     case "cardUsesAttack":
                         break;
@@ -109,5 +113,23 @@ public final class Table {
 
         Collections.shuffle(gameConfig.getPlayerOne().getDeck(), new Random(gameInput.getShuffleSeed()));
         Collections.shuffle(gameConfig.getPlayerTwo().getDeck(), new Random(gameInput.getShuffleSeed()));
+
+        gameConfig.getPlayerOne().getCardsInHand().clear();
+        gameConfig.getPlayerTwo().getCardsInHand().clear();
+        gameConfig.getPlayerOne().setMana(1);
+        gameConfig.getPlayerTwo().setMana(1);
+        gameConfig.getPlayerOne().setGameWins(0);
+        gameConfig.getPlayerTwo().setGameWins(0);
+
+        gameConfig.getPlayerOne().getCardsInHand().add(gameConfig.getPlayerOne().getDeck().get(0));
+        gameConfig.getPlayerOne().getDeck().remove(0);
+
+        gameConfig.getPlayerTwo().getCardsInHand().add(gameConfig.getPlayerTwo().getDeck().get(0));
+        gameConfig.getPlayerTwo().getDeck().remove(0);
+
+        for (int i = 0; i < 2; i ++) {
+            gameConfig.getPlayerOne().getPlayerRows().get(i).clear();
+            gameConfig.getPlayerTwo().getPlayerRows().get(i).clear();
+        }
     }
 }

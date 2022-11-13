@@ -53,7 +53,7 @@ public class Minion extends Card {
 
     @Override
     public String toString() {
-        return "CardInput{"
+        return "Minion{"
                 +  "mana="
                 + mana
                 +  ", attackDamage="

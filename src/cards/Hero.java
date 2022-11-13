@@ -34,7 +34,7 @@ public class Hero extends Card {
 
     @Override
     public String toString() {
-        return "CardInput{"
+        return "Hero{"
                 +  "mana="
                 + mana
                 + ", health="

@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import fileio.ActionsInput;
 import table_players.GameConfig;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,18 +44,24 @@ public final class Debug {
         return cardsInHand;
     }
 
+    //DE REZOLVAT OUTPUT CARDS ON TABLE
     public static ObjectNode getCardsOnTable(ActionsInput action, GameConfig gameConfig) {
         ObjectNode cardsOnTable = JsonNodeFactory.instance.objectNode();
-        List<Card> cardsToConvert = new ArrayList<>();
+
+        ArrayNode cardsOnRow1 = rowObjectNode(gameConfig.getPlayerTwo().getPlayerRows().get(0));
+        ArrayNode cardsOnRow2 = rowObjectNode(gameConfig.getPlayerTwo().getPlayerRows().get(1));
+        ArrayNode cardsOnRow3 = rowObjectNode(gameConfig.getPlayerOne().getPlayerRows().get(1));
+        ArrayNode cardsOnRow4 = rowObjectNode(gameConfig.getPlayerOne().getPlayerRows().get(0));
+
+        ArrayNode cardsOnRows = JsonNodeFactory.instance.arrayNode();
+        cardsOnRows.add(cardsOnRow1);
+        cardsOnRows.add(cardsOnRow2);
+        cardsOnRows.add(cardsOnRow3);
+        cardsOnRows.add(cardsOnRow4);
 
         cardsOnTable.put("command", action.getCommand());
 
-        for (int i = 0; i < 2; i++)
-            cardsToConvert.addAll(gameConfig.getPlayerTwo().getPlayerRows().get(i));
-        for (int i = 1; i >= 0; i--)
-            cardsToConvert.addAll(gameConfig.getPlayerOne().getPlayerRows().get(i));
-
-        cardsOnTable.replace("output", cardListObjectNode(cardsToConvert));
+        cardsOnTable.replace("output", cardsOnRows);
 
         return cardsOnTable;
     }
@@ -174,6 +181,17 @@ public final class Debug {
         ArrayNode cardsConversion = JsonNodeFactory.instance.arrayNode();
 
         for (Card card : cards) {
+            ObjectNode cardConversion = cardObjectNode(card);
+            cardsConversion.add(cardConversion);
+        }
+
+        return cardsConversion;
+    }
+
+    private static ArrayNode rowObjectNode(List<Minion> row) {
+        ArrayNode cardsConversion = JsonNodeFactory.instance.arrayNode();
+
+        for (Minion card : row) {
             ObjectNode cardConversion = cardObjectNode(card);
             cardsConversion.add(cardConversion);
         }
