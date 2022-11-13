@@ -19,7 +19,7 @@ public enum Error {
     HERO_FRIEND_ROW_ERR("Selected row does not belong to the current player.");
     private final String description;
 
-    Error(String description) {
+    Error(final String description) {
         this.description = description;
     }
 

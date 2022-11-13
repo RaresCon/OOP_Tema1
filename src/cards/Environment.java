@@ -2,10 +2,11 @@ package cards;
 
 import fileio.CardInput;
 
-public class Environment extends Card{
+public class Environment extends Card {
     private EnvironmentType environmentType;
 
-    public Environment(CardInput cardInput, CardType cardType, EnvironmentType environmentType) {
+    public Environment(final CardInput cardInput, final CardType cardType,
+                       final EnvironmentType environmentType) {
         name = cardInput.getName();
         description = cardInput.getDescription();
         mana = cardInput.getMana();
@@ -14,11 +15,18 @@ public class Environment extends Card{
         this.environmentType = environmentType;
     }
 
+    /**
+     *
+     * @return
+     */
     public EnvironmentType getEnvironmentType() {
         return environmentType;
     }
 
-    @Override
+    /**
+     *
+     * @return
+     */
     public String toString() {
         return "Environment{"
                 +  "mana="
