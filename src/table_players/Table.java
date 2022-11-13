@@ -27,43 +27,54 @@ public final class Table {
     public void playGame(Input input, ArrayNode output) {
         GameConfig gameConfig = new GameConfig();
 
-        int numRows = 2;
-        gameConfig.initRows(gameConfig.getPlayerOne(), gameConfig.getPlayerTwo(), numRows);
+        gameConfig.initRows(gameConfig.getPlayerOne(), gameConfig.getPlayerTwo(), 2);
 
         for (GameInput gameInput : input.getGames()) {
             gameConfig.setTurnsNum(0);
-            System.out.println("NEW MATCH " + gameConfig.getPlayerTwo().getMana());
 
             if (gameInput.getStartGame().getStartingPlayer() == 1)
                 gameConfig.setActivePlayer(gameConfig.getPlayerOne());
             else
                 gameConfig.setActivePlayer(gameConfig.getPlayerTwo());
-
             readyPlayersForGames(gameConfig, input, gameInput.getStartGame());
-            System.out.println("NEW MATCH AFTER EQUAL " + gameConfig.getPlayerTwo().getMana());
 
             for (ActionsInput action : gameInput.getActions())
                 switch (action.getCommand()) {
-                        // ACTIONS
+                    // ACTIONS
                     case "endPlayerTurn":
                         Action.endPlayerTurn(gameConfig);
                         break;
                     case "placeCard":
                         ObjectNode possibleError = Action.placeCard(action, gameConfig);
                         if (possibleError != null)
-                            output.add(Action.placeCard(action, gameConfig));
+                            output.add(possibleError);
                         break;
                     case "cardUsesAttack":
+                        possibleError = Action.cardUsesAttack(action, gameConfig);
+                        if (possibleError != null)
+                            output.add(possibleError);
                         break;
                     case "cardUsesAbility":
+                        possibleError = Action.cardUsesAbility(action, gameConfig);
+                        if (possibleError != null)
+                            output.add(possibleError);
                         break;
                     case "useAttackHero":
+                        possibleError = Action.useAttackHero(action, gameConfig);
+                        if (possibleError != null)
+                            output.add(possibleError);
                         break;
                     case "useHeroAbility":
+                        possibleError = Action.useHeroAbility(action, gameConfig);
+                        if (possibleError != null)
+                            output.add(possibleError);
                         break;
                     case "useEnvironmentCard":
+                        possibleError = Action.useEnvironment(action, gameConfig);
+                        if (possibleError != null)
+                            output.add(possibleError);
                         break;
-                        // DEBUG
+                    // DEBUG
                     case "getCardsInHand":
                         output.add(Debug.getCardsInHand(action, gameConfig));
                         break;
@@ -103,9 +114,11 @@ public final class Table {
                         break;
                 }
         }
-    }
+}
 
     private void readyPlayersForGames(GameConfig gameConfig, Input input, StartGameInput gameInput) {
+        gameConfig.getPlayerOne().getDeck().clear();
+        gameConfig.getPlayerTwo().getDeck().clear();
         gameConfig.getPlayerOne().setDeck(input.getPlayerOneDecks(), gameInput.getPlayerOneDeckIdx());
         gameConfig.getPlayerTwo().setDeck(input.getPlayerTwoDecks(), gameInput.getPlayerTwoDeckIdx());
         gameConfig.getPlayerOne().setPlayerHero(gameInput.getPlayerOneHero());
@@ -114,12 +127,13 @@ public final class Table {
         Collections.shuffle(gameConfig.getPlayerOne().getDeck(), new Random(gameInput.getShuffleSeed()));
         Collections.shuffle(gameConfig.getPlayerTwo().getDeck(), new Random(gameInput.getShuffleSeed()));
 
-        gameConfig.getPlayerOne().getCardsInHand().clear();
-        gameConfig.getPlayerTwo().getCardsInHand().clear();
+        gameConfig.setManaIncrement(1);
         gameConfig.getPlayerOne().setMana(1);
         gameConfig.getPlayerTwo().setMana(1);
-        gameConfig.getPlayerOne().setGameWins(0);
-        gameConfig.getPlayerTwo().setGameWins(0);
+        gameConfig.getPlayerOne().getCardsInHand().clear();
+        gameConfig.getPlayerTwo().getCardsInHand().clear();
+        gameConfig.getPlayerOne().getPlayerHero().setActive(true);
+        gameConfig.getPlayerTwo().getPlayerHero().setActive(true);
 
         gameConfig.getPlayerOne().getCardsInHand().add(gameConfig.getPlayerOne().getDeck().get(0));
         gameConfig.getPlayerOne().getDeck().remove(0);

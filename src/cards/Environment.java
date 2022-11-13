@@ -18,10 +18,6 @@ public class Environment extends Card{
         return environmentType;
     }
 
-    public void setEnvironmentType(EnvironmentType environmentType) {
-        this.environmentType = environmentType;
-    }
-
     @Override
     public String toString() {
         return "Environment{"
@@ -36,6 +32,7 @@ public class Environment extends Card{
                 +  ""
                 + name
                 + '\''
-                + '}';
+                + '}'
+                + '\n';
     }
 }

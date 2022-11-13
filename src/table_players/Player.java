@@ -123,7 +123,4 @@ public class Player {
         return playerRows;
     }
 
-    public void setPlayerRows(List<List<Minion>> playerRows) {
-        this.playerRows = playerRows;
-    }
 }

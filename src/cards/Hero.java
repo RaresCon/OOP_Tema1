@@ -2,6 +2,9 @@ package cards;
 
 import fileio.CardInput;
 
+import java.util.Comparator;
+import java.util.List;
+
 public class Hero extends Card {
     private int healthStat;
     private HeroType heroType;
@@ -16,6 +19,38 @@ public class Hero extends Card {
         this.heroType = heroType;
     }
 
+    public void heroAbility(List<Minion> affectedRow) {
+        switch (heroType) {
+            case ROYCE:
+                Minion maxAttackMinion;
+
+                if (affectedRow.stream().max(Comparator.comparing(Minion::getAttackStat)).isPresent())
+                    maxAttackMinion = affectedRow.stream().max(Comparator.comparing(Minion::getAttackStat)).get();
+                else
+                    return;
+                maxAttackMinion.setFrozenStat(2);
+                break;
+            case THORINA:
+                Minion maxHealthMinion;
+
+                if (affectedRow.stream().max(Comparator.comparing(Minion::getHealthStat)).isPresent())
+                    maxHealthMinion = affectedRow.stream().max(Comparator.comparing(Minion::getHealthStat)).get();
+                else
+                    return;
+                affectedRow.remove(maxHealthMinion);
+                break;
+            case MUDFACE:
+                for (Minion minion : affectedRow)
+                    minion.setHealthStat(minion.getHealthStat() + 1);
+                break;
+            case KOCIORAW:
+                for (Minion minion : affectedRow)
+                    minion.setAttackStat(minion.getAttackStat() + 1);
+                break;
+        }
+        isActive = false;
+    }
+
     public int getHealthStat() {
         return healthStat;
     }
@@ -26,10 +61,6 @@ public class Hero extends Card {
 
     public HeroType getHeroType() {
         return heroType;
-    }
-
-    public void setHeroType(HeroType heroType) {
-        this.heroType = heroType;
     }
 
     @Override

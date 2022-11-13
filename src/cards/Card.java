@@ -8,6 +8,7 @@ public abstract class Card {
     protected List<String> colors;
     protected int mana;
     protected CardType cardType;
+    protected boolean isActive;
 
     public String getName() {
         return name;
@@ -47,5 +48,13 @@ public abstract class Card {
 
     public void setCardType(CardType cardType) {
         this.cardType = cardType;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 }

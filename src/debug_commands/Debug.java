@@ -9,7 +9,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import fileio.ActionsInput;
 import table_players.GameConfig;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,7 +43,6 @@ public final class Debug {
         return cardsInHand;
     }
 
-    //DE REZOLVAT OUTPUT CARDS ON TABLE
     public static ObjectNode getCardsOnTable(ActionsInput action, GameConfig gameConfig) {
         ObjectNode cardsOnTable = JsonNodeFactory.instance.objectNode();
 
@@ -97,23 +95,22 @@ public final class Debug {
         ObjectNode cardAtPosition = JsonNodeFactory.instance.objectNode();
 
         cardAtPosition.put("command", action.getCommand());
+        cardAtPosition.put("x", action.getX());
+        cardAtPosition.put("y", action.getY());
 
         if (action.getY() < 0 || action.getY() > 3 || action.getX() < 0 || action.getX() > 4) {
-            cardAtPosition.put("output", "No card at that position.");
+            cardAtPosition.put("output", "No card available at that position.");
             return cardAtPosition;
         }
 
-        List<List<Minion>> playerOneRows = gameConfig.getPlayerOne().getPlayerRows();
-        List<List<Minion>> playerTwoRows = gameConfig.getPlayerTwo().getPlayerRows();
+        Minion cardOnTable = getCardFromTable(action.getX(), action.getY(), gameConfig);
 
-        if (action.getY() == 0 && action.getX() < playerTwoRows.get(0).size())
-            cardAtPosition.replace("output", cardObjectNode(playerTwoRows.get(0).get(action.getX())));
-        if (action.getY() == 1 && action.getX() < playerTwoRows.get(1).size())
-            cardAtPosition.replace("output", cardObjectNode(playerTwoRows.get(1).get(action.getX())));
-        if (action.getY() == 2 && action.getX() < playerOneRows.get(2).size())
-            cardAtPosition.replace("output", cardObjectNode(playerOneRows.get(2).get(action.getX())));
-        if (action.getY() == 3 && action.getX() < playerOneRows.get(3).size())
-            cardAtPosition.replace("output", cardObjectNode(playerOneRows.get(3).get(action.getX())));
+        if (cardOnTable == null) {
+            cardAtPosition.put("output", "No card available at that position.");
+            return cardAtPosition;
+        }
+
+        cardAtPosition.replace("output", cardObjectNode(cardOnTable));
 
         return cardAtPosition;
     }
@@ -140,10 +137,15 @@ public final class Debug {
 
         List<Card> envCards = new ArrayList<>();
 
-        if (action.getPlayerIdx() == 1)
-            for (Card card : gameConfig.getPlayerOne().getCardsInHand())
-                if (card.getCardType() == ENVIRONMENT)
-                    envCards.add(card);
+        if (action.getPlayerIdx() == 1) {
+            for (Card cardOne : gameConfig.getPlayerOne().getCardsInHand())
+                if (cardOne.getCardType() == ENVIRONMENT)
+                    envCards.add(cardOne);
+        } else {
+            for (Card cardTwo : gameConfig.getPlayerTwo().getCardsInHand())
+                if (cardTwo.getCardType() == ENVIRONMENT)
+                    envCards.add(cardTwo);
+        }
 
         envCardsInHand.replace("output", cardListObjectNode(envCards));
 
@@ -157,19 +159,19 @@ public final class Debug {
         List<Card> frznCards = new ArrayList<>();
 
         for (Minion minion : gameConfig.getPlayerTwo().getPlayerRows().get(0))
-            if (minion.isFrozenStat())
+            if (minion.isFrozenStat() > 0)
                 frznCards.add(minion);
 
         for (Minion minion : gameConfig.getPlayerTwo().getPlayerRows().get(1))
-            if (minion.isFrozenStat())
+            if (minion.isFrozenStat() > 0)
                 frznCards.add(minion);
 
         for (Minion minion : gameConfig.getPlayerOne().getPlayerRows().get(1))
-            if (minion.isFrozenStat())
+            if (minion.isFrozenStat() > 0)
                 frznCards.add(minion);
 
         for (Minion minion : gameConfig.getPlayerOne().getPlayerRows().get(0))
-            if (minion.isFrozenStat())
+            if (minion.isFrozenStat() > 0)
                 frznCards.add(minion);
 
         frznCardsOnTable.replace("output", cardListObjectNode(frznCards));
@@ -223,5 +225,14 @@ public final class Debug {
             colorsConversion.add(color);
 
         return colorsConversion;
+    }
+
+    private static Minion getCardFromTable(int x, int y, GameConfig gameConfig) {
+        if (x < 2 && y < gameConfig.getPlayerTwo().getPlayerRows().get(x).size())
+            return gameConfig.getPlayerTwo().getPlayerRows().get(x).get(y);
+        else if (x > 1 && y < gameConfig.getPlayerOne().getPlayerRows().get(-(x - 3)).size())
+            return gameConfig.getPlayerOne().getPlayerRows().get(-(x - 3)).get(y);
+
+        return null;
     }
 }
