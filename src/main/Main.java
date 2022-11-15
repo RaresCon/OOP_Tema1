@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import checker.CheckerConstants;
 
 import fileio.Input;
-import table.players.Table;
+import tableplayers.Table;
 
 import java.io.File;
 import java.io.IOException;

@@ -6,8 +6,9 @@ public class Minion extends Card {
     private int attackStat;
     private int healthStat;
     private int frozenStat;
-    private MinionType minionType;
+    private final MinionType minionType;
     private boolean isTank = false;
+    private int homeRow;
 
     public Minion(final CardInput cardInput, final CardType cardType, final MinionType minionType) {
         name = cardInput.getName();
@@ -22,6 +23,13 @@ public class Minion extends Card {
             isTank = true;
         }
         frozenStat = 0;
+
+        switch (minionType) {
+            case RIPPER, MIRAJ, GOLIATH, WARDEN -> homeRow = 1;
+            case SENTINEL, BERSERKER, CURSED, DISCIPLE -> homeRow = 0;
+            default -> {
+            }
+        }
     }
 
     /**
@@ -65,7 +73,6 @@ public class Minion extends Card {
                 cardAttacked.attackStat = cardAttacked.healthStat - cardAttacked.attackStat;
             }
             default -> {
-
             }
         }
         isActive = false;
@@ -141,6 +148,10 @@ public class Minion extends Card {
      */
     public void setTank(final boolean tank) {
         isTank = tank;
+    }
+
+    public int getHomeRow() {
+        return homeRow;
     }
 
     /**

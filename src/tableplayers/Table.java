@@ -1,14 +1,14 @@
-package table.players;
+package tableplayers;
 
 import actions.Action;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import debug.commands.Debug;
+import debugcommands.Debug;
 import fileio.ActionsInput;
 import fileio.GameInput;
 import fileio.Input;
 import fileio.StartGameInput;
-import stats.commands.Stats;
+import statscommands.Stats;
 
 import java.util.Collections;
 import java.util.Random;
@@ -46,8 +46,10 @@ public final class Table {
 
             if (gameInput.getStartGame().getStartingPlayer() == 1) {
                 gameConfig.setActivePlayer(gameConfig.getPlayerOne());
+                gameConfig.setInactivePlayer(gameConfig.getPlayerTwo());
             } else {
                 gameConfig.setActivePlayer(gameConfig.getPlayerTwo());
+                gameConfig.setInactivePlayer(gameConfig.getPlayerOne());
             }
             readyPlayersForGames(gameConfig, input, gameInput.getStartGame());
 

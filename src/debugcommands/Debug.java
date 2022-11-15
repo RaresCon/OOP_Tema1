@@ -1,4 +1,4 @@
-package debug.commands;
+package debugcommands;
 
 import cards.Card;
 import cards.Hero;
@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import fileio.ActionsInput;
-import table.players.GameConfig;
+import tableplayers.GameConfig;
 
 import java.util.ArrayList;
 import java.util.List;

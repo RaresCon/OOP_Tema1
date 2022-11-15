@@ -1,9 +1,9 @@
-package stats.commands;
+package statscommands;
 
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import fileio.ActionsInput;
-import table.players.GameConfig;
+import tableplayers.GameConfig;
 
 
 public final class Stats {

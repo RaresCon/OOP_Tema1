@@ -1,4 +1,4 @@
-package table.players;
+package tableplayers;
 
 import cards.Card;
 import cards.Environment;

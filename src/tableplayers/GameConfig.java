@@ -1,11 +1,15 @@
-package table.players;
+package tableplayers;
+
+import cards.Minion;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GameConfig {
     private Player playerOne = new Player();
     private Player playerTwo = new Player();
     private Player activePlayer = null;
+    private Player inactivePlayer = null;
     private int manaIncrement = 1;
     private final int manaMaxIncrement = 10;
     private final int maxCardsOnRow = 5;
@@ -22,6 +26,38 @@ public class GameConfig {
             playerOne.getPlayerRows().add(new ArrayList<>());
             playerTwo.getPlayerRows().add(new ArrayList<>());
         }
+    }
+
+    public Minion getCardFromTable(final int x, final int y, final GameConfig gameConfig) {
+        if (x < 2 && y < gameConfig.getPlayerTwo().getPlayerRows().get(x).size()) {
+            return gameConfig.getPlayerTwo().getPlayerRows().get(x).get(y);
+        } else if (x > 1 && y < gameConfig.getPlayerOne().getPlayerRows().get(-(x - 3)).size()) {
+            return gameConfig.getPlayerOne().getPlayerRows().get(-(x - 3)).get(y);
+        }
+
+        return null;
+    }
+
+    public List<Minion> getAttackedRow(GameConfig gameConfig, int currentIdx) {
+        if (currentIdx > 1) {
+            return gameConfig.getPlayerOne().getPlayerRows().get(-(currentIdx - 3));
+        } else {
+            return gameConfig.getPlayerTwo().getPlayerRows().get(currentIdx);
+        }
+    }
+
+    /**
+     *
+     * @param player
+     * @return
+     */
+    public boolean checkTankOnRows(final Player player) {
+        for (Minion minion : player.getPlayerRows().get(1)) {
+            if (minion.isTank()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -54,6 +90,14 @@ public class GameConfig {
      */
     public void setActivePlayer(final Player activePlayer) {
         this.activePlayer = activePlayer;
+    }
+
+    public Player getInactivePlayer() {
+        return inactivePlayer;
+    }
+
+    public void setInactivePlayer(Player inactivePlayer) {
+        this.inactivePlayer = inactivePlayer;
     }
 
     /**
