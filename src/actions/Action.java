@@ -252,65 +252,14 @@ public final class Action {
      */
     public static ObjectNode useHeroAbility(final ActionsInput action,
                                             final GameConfig gameConfig) {
-        ObjectNode error = JsonNodeFactory.instance.objectNode();
+        ObjectNode error = ErrorMessages.errorFactory(action, gameConfig);
 
-        error.put("command", "useHeroAbility");
-        error.put("affectedRow", action.getAffectedRow());
-
-        if (gameConfig.getActivePlayer().getPlayerHero().getMana()
-            > gameConfig.getActivePlayer().getMana()) {
-            error.put("error", HERO_MANA_ERR.getDescription());
-
+        if (error != null)
             return error;
-        } else if (!gameConfig.getActivePlayer().getPlayerHero().isActive()) {
-            error.put("error", INACTIVE_HERO.getDescription());
 
-            return error;
-        } else {
-            switch (gameConfig.getActivePlayer().getPlayerHero().getHeroType()) {
-                case ROYCE, THORINA -> {
-                    if (gameConfig.getActivePlayer().equals(gameConfig.getPlayerOne())
-                            && action.getAffectedRow() > 1
-                            || gameConfig.getActivePlayer().equals(gameConfig.getPlayerTwo())
-                            && action.getAffectedRow() < 2) {
-                        error.put("error", HERO_ENEMY_ROW_ERR.getDescription());
-
-                        return error;
-                    }
-                    if (gameConfig.getActivePlayer().equals(gameConfig.getPlayerOne())) {
-                        gameConfig.getActivePlayer().getPlayerHero()
-                                .heroAbility(gameConfig.getPlayerTwo()
-                                        .getPlayerRows().get(action.getAffectedRow()));
-                    } else {
-                        gameConfig.getActivePlayer().getPlayerHero()
-                                .heroAbility(gameConfig.getPlayerOne()
-                                        .getPlayerRows().get(-(action.getAffectedRow() - 3)));
-                    }
-                }
-                case MUDFACE, KOCIORAW -> {
-                    if (gameConfig.getActivePlayer().equals(gameConfig.getPlayerOne())
-                            && action.getAffectedRow() < 2
-                            || gameConfig.getActivePlayer().equals(gameConfig.getPlayerTwo())
-                            && action.getAffectedRow() > 1) {
-                        error.put("error", HERO_FRIEND_ROW_ERR.getDescription());
-
-                        return error;
-                    }
-                    if (gameConfig.getActivePlayer().equals(gameConfig.getPlayerOne())) {
-                        gameConfig.getActivePlayer().getPlayerHero()
-                                .heroAbility(gameConfig.getPlayerOne()
-                                        .getPlayerRows().get(-(action.getAffectedRow() - 3)));
-
-                    } else {
-                        gameConfig.getActivePlayer().getPlayerHero()
-                                .heroAbility(gameConfig.getPlayerTwo()
-                                        .getPlayerRows().get(action.getAffectedRow()));
-                    }
-                }
-                default -> {
-                }
-            }
-        }
+        gameConfig.getActivePlayer().getPlayerHero()
+                .heroAbility(gameConfig.
+                             getAttackedRow(gameConfig, action.getAffectedRow()));
 
         gameConfig.getActivePlayer().setMana(gameConfig.getActivePlayer().getMana()
                                              - gameConfig.getActivePlayer().getPlayerHero()

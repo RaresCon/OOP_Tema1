@@ -45,12 +45,10 @@ public enum ErrorMessages {
         Minion cardAttacker;
         Minion cardAttacked;
         switch (action.getCommand()) {
-            case "placeCard":
+            case "placeCard" -> {
                 error.put("command", action.getCommand());
                 error.put("handIdx", action.getHandIdx());
-
                 currentPlayerCards = gameConfig.getActivePlayer().getCardsInHand();
-
                 if (currentPlayerCards.get(action.getHandIdx()).getCardType() == ENVIRONMENT) {
                     error.put("error", PLACE_ENV_ERR.getDescription());
 
@@ -61,23 +59,19 @@ public enum ErrorMessages {
 
                     return error;
                 }
-
                 Minion currentCardMin = (Minion) currentPlayerCards.get(action.getHandIdx());
-
                 if (gameConfig.getActivePlayer().getPlayerRows()
                         .get(currentCardMin.getHomeRow()).size() == gameConfig.getMaxCardsOnRow()) {
                     error.put("error", ROW_SPACE_ERR.getDescription());
 
                     return error;
                 }
-                break;
-            case "useEnvironmentCard":
+            }
+            case "useEnvironmentCard" -> {
                 error.put("command", action.getCommand());
                 error.put("handIdx", action.getHandIdx());
                 error.put("affectedRow", action.getAffectedRow());
-
                 currentPlayerCards = gameConfig.getActivePlayer().getCardsInHand();
-
                 if (currentPlayerCards.get(action.getHandIdx()).getCardType() != ENVIRONMENT) {
                     error.put("error", USE_NONENV_ERR.getDescription());
 
@@ -88,7 +82,6 @@ public enum ErrorMessages {
 
                     return error;
                 }
-
                 Environment currentCardEnv =
                         (Environment) currentPlayerCards.get(action.getHandIdx());
                 if (gameConfig.getActivePlayer().equals(gameConfig.getPlayerOne())) {
@@ -104,15 +97,12 @@ public enum ErrorMessages {
                         return error;
                     }
                 }
-
                 int affectedRowIdx;
-
                 if (action.getAffectedRow() > 1) {
-                    affectedRowIdx = - (action.getAffectedRow() - 3);
+                    affectedRowIdx = -(action.getAffectedRow() - 3);
                 } else {
                     affectedRowIdx = action.getAffectedRow();
                 }
-
                 if (currentCardEnv.getEnvironmentType().equals(HEARTHOUND)
                         && gameConfig.getActivePlayer().getPlayerRows().get(affectedRowIdx)
                         .size() == gameConfig.getMaxCardsOnRow()) {
@@ -120,32 +110,29 @@ public enum ErrorMessages {
 
                     return error;
                 }
-                break;
-            case "cardUsesAttack":
+            }
+            case "cardUsesAttack" -> {
                 error.put("command", "cardUsesAttack");
                 error.replace("cardAttacker", mapper.valueToTree(action.getCardAttacker()));
                 error.replace("cardAttacked", mapper.valueToTree(action.getCardAttacked()));
-
                 int xDefence = action.getCardAttacked().getX();
-
-                if ((gameConfig.getActivePlayer().equals(gameConfig.getPlayerOne()) && xDefence > 1)
-                    || (gameConfig.getActivePlayer().equals(gameConfig.getPlayerTwo()) && xDefence < 2)) {
+                if ((gameConfig.getActivePlayer().equals(gameConfig.getPlayerOne())
+                    && xDefence > 1)
+                    || (gameConfig.getActivePlayer().equals(gameConfig.getPlayerTwo())
+                    && xDefence < 2)) {
                     error.put("error", ATTACKED_ERR.getDescription());
 
                     return error;
                 }
-
                 cardAttacker = gameConfig.getCardFromTable(action.getCardAttacker().getX(),
-                               action.getCardAttacker().getY(), gameConfig);
+                        action.getCardAttacker().getY(), gameConfig);
                 cardAttacked = gameConfig.getCardFromTable(action.getCardAttacked().getX(),
-                               action.getCardAttacked().getY(), gameConfig);
-
+                        action.getCardAttacked().getY(), gameConfig);
                 if (cardAttacked == null || cardAttacker == null) {
                     error.put("error", "The attacker or the attacked doesn't exist on the table");
 
                     return error;
                 }
-
                 if (!cardAttacker.isActive()) {
                     error.put("error", INACTIVE_CARD_ERR.getDescription());
 
@@ -155,33 +142,28 @@ public enum ErrorMessages {
 
                     return error;
                 }
-
                 if (gameConfig.checkTankOnRows(gameConfig.getInactivePlayer())
                         && !(cardAttacked.isTank())) {
                     error.put("error", TANK_ERR.getDescription());
 
                     return error;
                 }
-                break;
-                // maybe better implementation?
-            case "cardUsesAbility":
+            }
+            // maybe better implementation?
+            case "cardUsesAbility" -> {
                 error.put("command", "cardUsesAbility");
                 error.replace("cardAttacker", mapper.valueToTree(action.getCardAttacker()));
                 error.replace("cardAttacked", mapper.valueToTree(action.getCardAttacked()));
-
-                xDefence = action.getCardAttacked().getX();
-
+                int xDefence = action.getCardAttacked().getX();
                 cardAttacker = gameConfig.getCardFromTable(action.getCardAttacker().getX(),
-                               action.getCardAttacker().getY(), gameConfig);
+                        action.getCardAttacker().getY(), gameConfig);
                 cardAttacked = gameConfig.getCardFromTable(action.getCardAttacked().getX(),
-                               action.getCardAttacked().getY(), gameConfig);
-
+                        action.getCardAttacked().getY(), gameConfig);
                 if (cardAttacked == null || cardAttacker == null) {
                     error.put("error", "The attacker or the attacked doesn't exist on the table");
 
                     return error;
                 }
-
                 if (cardAttacker.isFrozenStat() > 0) {
                     error.put("error", FROZEN_CARD.getDescription());
 
@@ -191,10 +173,11 @@ public enum ErrorMessages {
 
                     return error;
                 }
-
                 if (cardAttacker.getMinionType().equals(DISCIPLE)) {
-                    if ((gameConfig.getActivePlayer().equals(gameConfig.getPlayerOne()) && xDefence < 2)
-                        || (gameConfig.getActivePlayer().equals(gameConfig.getPlayerTwo()) && xDefence > 1)) {
+                    if ((gameConfig.getActivePlayer().equals(gameConfig.getPlayerOne())
+                        && xDefence < 2)
+                        || (gameConfig.getActivePlayer().equals(gameConfig.getPlayerTwo())
+                        && xDefence > 1)) {
                         error.put("error", OWN_CARD_ERR.getDescription());
 
                         return error;
@@ -207,22 +190,20 @@ public enum ErrorMessages {
 
                     return error;
                 } else if (gameConfig.checkTankOnRows(gameConfig.getInactivePlayer())
-                    && !(cardAttacked.isTank())) {
+                        && !(cardAttacked.isTank())) {
                     error.put("error", TANK_ERR.getDescription());
 
                     return error;
                 }
-                break;
-            case "useAttackHero":
+            }
+            case "useAttackHero" -> {
                 error.put("command", "useAttackHero");
                 error.replace("cardAttacker", mapper.valueToTree(action.getCardAttacker()));
                 cardAttacker = gameConfig.getCardFromTable(action.getCardAttacker().getX(),
-                               action.getCardAttacker().getY(), gameConfig);
-
+                        action.getCardAttacker().getY(), gameConfig);
                 if (cardAttacker == null) {
                     return null;
                 }
-
                 if (cardAttacker.isFrozenStat() > 0) {
                     error.put("error", FROZEN_CARD.getDescription());
 
@@ -236,8 +217,45 @@ public enum ErrorMessages {
 
                     return error;
                 }
+            }
+            case "useHeroAbility" -> {
+                error.put("command", "useHeroAbility");
+                error.put("affectedRow", action.getAffectedRow());
 
-                break;
+                if (gameConfig.getActivePlayer().getPlayerHero().getMana()
+                    > gameConfig.getActivePlayer().getMana()) {
+                    error.put("error", HERO_MANA_ERR.getDescription());
+
+                    return error;
+                } else if (!gameConfig.getActivePlayer().getPlayerHero().isActive()) {
+                    error.put("error", INACTIVE_HERO.getDescription());
+
+                    return error;
+                }
+
+                switch (gameConfig.getActivePlayer().getPlayerHero().getHeroType()) {
+                    case ROYCE, THORINA -> {
+                        if (gameConfig.getActivePlayer().equals(gameConfig.getPlayerOne())
+                                && action.getAffectedRow() > 1
+                                || gameConfig.getActivePlayer().equals(gameConfig.getPlayerTwo())
+                                && action.getAffectedRow() < 2) {
+                            error.put("error", HERO_ENEMY_ROW_ERR.getDescription());
+
+                            return error;
+                        }
+                    }
+                    case MUDFACE, KOCIORAW -> {
+                        if (gameConfig.getActivePlayer().equals(gameConfig.getPlayerOne())
+                                && action.getAffectedRow() < 2
+                                || gameConfig.getActivePlayer().equals(gameConfig.getPlayerTwo())
+                                && action.getAffectedRow() > 1) {
+                            error.put("error", HERO_FRIEND_ROW_ERR.getDescription());
+
+                            return error;
+                        }
+                    }
+                }
+            }
         }
         return null;
     }

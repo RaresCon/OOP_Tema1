@@ -3,6 +3,7 @@ package debugcommands;
 import cards.Card;
 import cards.Hero;
 import cards.Minion;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -18,8 +19,8 @@ import static cards.CardType.MINION;
 
 public final class Debug {
     private Debug() {
-
     }
+
 
     /**
      *
