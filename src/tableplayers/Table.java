@@ -1,14 +1,13 @@
 package tableplayers;
 
-import actions.Action;
+import commands.Actions;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import debugcommands.Debug;
+import commands.Debugs;
 import fileio.ActionsInput;
 import fileio.GameInput;
 import fileio.Input;
 import fileio.StartGameInput;
-import statscommands.Stats;
+import commands.Stats;
 
 import java.util.Collections;
 import java.util.Random;
@@ -53,66 +52,47 @@ public final class Table {
             }
             readyPlayersForGames(gameConfig, input, gameInput.getStartGame());
 
-            ObjectNode possibleError;
             for (ActionsInput action : gameInput.getActions()) {
                 switch (action.getCommand()) {
                     // ACTIONS
-                    case "endPlayerTurn" -> Action.endPlayerTurn(gameConfig);
-                    case "placeCard" -> {
-                        possibleError = Action.placeCard(action, gameConfig);
-                        if (possibleError != null) {
-                            output.add(possibleError);
-                        }
-                    }
-                    case "cardUsesAttack" -> {
-                        possibleError = Action.cardUsesAttack(action, gameConfig);
-                        if (possibleError != null) {
-                            output.add(possibleError);
-                        }
-                    }
-                    case "cardUsesAbility" -> {
-                        possibleError = Action.cardUsesAbility(action, gameConfig);
-                        if (possibleError != null) {
-                            output.add(possibleError);
-                        }
-                    }
-                    case "useAttackHero" -> {
-                        possibleError = Action.useAttackHero(action, gameConfig);
-                        if (possibleError != null) {
-                            output.add(possibleError);
-                        }
-                    }
-                    case "useHeroAbility" -> {
-                        possibleError = Action.useHeroAbility(action, gameConfig);
-                        if (possibleError != null) {
-                            output.add(possibleError);
-                        }
-                    }
-                    case "useEnvironmentCard" -> {
-                        possibleError = Action.useEnvironment(action, gameConfig);
-                        if (possibleError != null) {
-                            output.add(possibleError);
-                        }
-                    }
+                    case "endPlayerTurn" ->
+                            Actions.END_TURN.executeCommand(null, gameConfig, null);
+                    case "placeCard" ->
+                            Actions.PLACE_CARD.executeCommand(action, gameConfig, output);
+                    case "cardUsesAttack" ->
+                            Actions.USE_CARD_ATTACK.executeCommand(action, gameConfig, output);
+                    case "cardUsesAbility" ->
+                            Actions.USE_CARD_ABILITY.executeCommand(action, gameConfig, output);
+                    case "useAttackHero" ->
+                            Actions.ATTACK_HERO.executeCommand(action, gameConfig, output);
+                    case "useHeroAbility" ->
+                            Actions.USE_HERO_ABILITY.executeCommand(action, gameConfig, output);
+                    case "useEnvironmentCard" ->
+                            Actions.USE_ENVIRONMENT.executeCommand(action, gameConfig, output);
                     // DEBUG
-                    case "getCardsInHand" -> output.add(Debug.getCardsInHand(action, gameConfig));
-                    case "getPlayerDeck" -> output.add(Debug.getPlayerDeck(action, gameConfig));
-                    case "getCardsOnTable" -> output.add(Debug.getCardsOnTable(action, gameConfig));
-                    case "getPlayerTurn" -> output.add(Debug.getPlayerTurn(action, gameConfig));
-                    case "getPlayerHero" -> output.add(Debug.getPlayerHero(action, gameConfig));
+                    case "getCardsInHand" ->
+                            Debugs.GET_CARDS_HAND.executeCommand(action, gameConfig, output);
+                    case "getPlayerDeck" ->
+                            Debugs.GET_PLAYER_DECK.executeCommand(action, gameConfig, output);
+                    case "getCardsOnTable" ->
+                            Debugs.GET_CARDS_TABLE.executeCommand(action, gameConfig, output);
+                    case "getPlayerTurn" ->
+                            Debugs.GET_TURN.executeCommand(action, gameConfig, output);
+                    case "getPlayerHero" ->
+                            Debugs.GET_HERO.executeCommand(action, gameConfig, output);
                     case "getCardAtPosition" ->
-                            output.add(Debug.getCardAtPosition(action, gameConfig));
-                    case "getPlayerMana" -> output.add(Debug.getPlayerMana(action, gameConfig));
+                            Debugs.CARD_AT_POSITION.executeCommand(action, gameConfig, output);
+                    case "getPlayerMana" ->
+                            Debugs.GET_PLAYER_MANA.executeCommand(action, gameConfig, output);
                     case "getEnvironmentCardsInHand" ->
-                            output.add(Debug.getEnvCardsInHand(action, gameConfig));
+                            Debugs.ENV_CARDS_HAND.executeCommand(action, gameConfig, output);
                     case "getFrozenCardsOnTable" ->
-                            output.add(Debug.getFrznCardsOnTable(action, gameConfig));
-
+                            Debugs.FROZEN_CARDS_TABLE.executeCommand(action, gameConfig, output);
                     // STATS
                     case "getTotalGamesPlayed" ->
-                            output.add(Stats.getTotalGames(action, gameConfig));
+                            Stats.GET_TOTAL_GAMES.executeCommand(action, gameConfig, output);
                     case "getPlayerOneWins", "getPlayerTwoWins" ->
-                            output.add(Stats.getPlayerWins(action, gameConfig));
+                            Stats.GET_WINS.executeCommand(action, gameConfig, output);
                     default -> {
                     }
                 }

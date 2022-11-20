@@ -48,8 +48,11 @@ public enum ErrorMessages {
             case "placeCard" -> {
                 error.put("command", action.getCommand());
                 error.put("handIdx", action.getHandIdx());
+
                 currentPlayerCards = gameConfig.getActivePlayer().getCardsInHand();
-                if (currentPlayerCards.get(action.getHandIdx()).getCardType() == ENVIRONMENT) {
+                if (action.getHandIdx() >= currentPlayerCards.size()) {
+
+                } else if (currentPlayerCards.get(action.getHandIdx()).getCardType() == ENVIRONMENT) {
                     error.put("error", PLACE_ENV_ERR.getDescription());
 
                     return error;
@@ -260,13 +263,9 @@ public enum ErrorMessages {
         return null;
     }
 
+    //abstract ObjectNode returnError();
 
     public String getDescription() {
-        return description;
-    }
-
-    @Override
-    public String toString() {
         return description;
     }
 }
