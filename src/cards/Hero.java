@@ -1,66 +1,31 @@
 package cards;
 
+import abilities.OnRowAbilities;
 import fileio.CardInput;
 
-import java.util.Comparator;
 import java.util.List;
 
 public class Hero extends Card {
     private int healthStat = 30;
-    private HeroType heroType;
+    private final OnRowAbilities heroAbility;
 
-    public Hero(final CardInput cardInput, final CardType cardType, final HeroType heroType) {
+    public Hero(final CardInput cardInput, final CardType cardType,
+                final int onFriendAbility, final OnRowAbilities ability) {
         name = cardInput.getName();
         description = cardInput.getDescription();
         colors = cardInput.getColors();
         mana = cardInput.getMana();
+        heroAbility = ability;
         this.cardType = cardType;
-        this.heroType = heroType;
+        this.onFriendAbility = onFriendAbility;
     }
 
     /**
      *
      * @param affectedRow
      */
-    public void heroAbility(final List<Minion> affectedRow) {
-        switch (heroType) {
-            case ROYCE:
-                Minion maxAttackMinion;
-
-                if (affectedRow.stream().max(Comparator.comparing(Minion::getAttackStat))
-                               .isPresent()) {
-                    maxAttackMinion = affectedRow.stream()
-                                      .max(Comparator.comparing(Minion::getAttackStat)).get();
-                } else {
-                    return;
-                }
-                maxAttackMinion.setFrozenStat(2);
-                break;
-            case THORINA:
-                Minion maxHealthMinion;
-
-                if (affectedRow.stream().max(Comparator.comparing(Minion::getHealthStat))
-                               .isPresent()) {
-                    maxHealthMinion = affectedRow.stream()
-                                      .max(Comparator.comparing(Minion::getHealthStat)).get();
-                } else {
-                    return;
-                }
-                affectedRow.remove(maxHealthMinion);
-                break;
-            case MUDFACE:
-                for (Minion minion : affectedRow) {
-                    minion.setHealthStat(minion.getHealthStat() + 1);
-                }
-                break;
-            case KOCIORAW:
-                for (Minion minion : affectedRow) {
-                    minion.setAttackStat(minion.getAttackStat() + 1);
-                }
-                break;
-            default:
-                break;
-        }
+    public void useHeroAbility(final List<Minion> affectedRow) {
+        heroAbility.useAbility(affectedRow);
         isActive = false;
     }
 
@@ -78,14 +43,6 @@ public class Hero extends Card {
      */
     public void setHealthStat(final int healthStat) {
         this.healthStat = healthStat;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public HeroType getHeroType() {
-        return heroType;
     }
 
     /**

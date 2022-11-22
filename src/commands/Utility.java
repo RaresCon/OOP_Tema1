@@ -6,13 +6,11 @@ import cards.Minion;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import fileio.ActionsInput;
 import tableplayers.GameConfig;
+import tableplayers.Player;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import static cards.CardType.ENVIRONMENT;
 import static cards.CardType.HERO;
 import static cards.CardType.MINION;
 
@@ -105,5 +103,19 @@ public final class Utility {
         }
 
         return null;
+    }
+
+    /**
+     *
+     * @param player
+     * @return
+     */
+    public static boolean checkTankOnRows(final Player player) {
+        for (Minion minion : player.getPlayerRows().get(1)) {
+            if (minion.isTank()) {
+                return true;
+            }
+        }
+        return false;
     }
 }

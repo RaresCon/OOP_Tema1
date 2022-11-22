@@ -16,7 +16,8 @@ import static cards.CardType.ENVIRONMENT;
 public enum Debugs implements Command {
     GET_PLAYER_DECK {
         @Override
-        public void executeCommand(ActionsInput action, GameConfig gameConfig, ArrayNode output) {
+        public void executeCommand(final ActionsInput action, final GameConfig gameConfig,
+                                   final ArrayNode output) {
             ObjectNode cardsInDeck = JsonNodeFactory.instance.objectNode();
 
             cardsInDeck.put("command", action.getCommand());
@@ -24,10 +25,10 @@ public enum Debugs implements Command {
 
             if (action.getPlayerIdx() == 1) {
                 cardsInDeck.replace("output", Utility.cardListObjectNode(gameConfig
-                                                                 .getPlayerOne().getDeck()));
+                                              .getPlayerOne().getDeck()));
             } else {
                 cardsInDeck.replace("output", Utility.cardListObjectNode(gameConfig
-                                                                 .getPlayerTwo().getDeck()));
+                                              .getPlayerTwo().getDeck()));
             }
 
             output.add(cardsInDeck);
@@ -36,7 +37,8 @@ public enum Debugs implements Command {
 
     GET_CARDS_HAND {
         @Override
-        public void executeCommand(ActionsInput action, GameConfig gameConfig, ArrayNode output) {
+        public void executeCommand(final ActionsInput action, final GameConfig gameConfig,
+                                   final ArrayNode output) {
             ObjectNode cardsInHand = JsonNodeFactory.instance.objectNode();
 
             cardsInHand.put("command", action.getCommand());
@@ -56,7 +58,8 @@ public enum Debugs implements Command {
 
     GET_CARDS_TABLE {
         @Override
-        public void executeCommand(ActionsInput action, GameConfig gameConfig, ArrayNode output) {
+        public void executeCommand(final ActionsInput action, final GameConfig gameConfig,
+                                   final ArrayNode output) {
             ObjectNode cardsOnTable = JsonNodeFactory.instance.objectNode();
 
             ArrayNode cardsOnRow1 = Utility.rowObjectNode(gameConfig.getPlayerTwo()
@@ -84,7 +87,8 @@ public enum Debugs implements Command {
 
     GET_TURN {
         @Override
-        public void executeCommand(ActionsInput action, GameConfig gameConfig, ArrayNode output) {
+        public void executeCommand(final ActionsInput action, final GameConfig gameConfig,
+                                   final ArrayNode output) {
             ObjectNode playerTurn = JsonNodeFactory.instance.objectNode();
 
             playerTurn.put("command", action.getCommand());
@@ -101,7 +105,8 @@ public enum Debugs implements Command {
 
     GET_HERO {
         @Override
-        public void executeCommand(ActionsInput action, GameConfig gameConfig, ArrayNode output) {
+        public void executeCommand(final ActionsInput action, final GameConfig gameConfig,
+                                   final ArrayNode output) {
             ObjectNode playerHero = JsonNodeFactory.instance.objectNode();
 
             playerHero.put("command", action.getCommand());
@@ -121,7 +126,8 @@ public enum Debugs implements Command {
 
     CARD_AT_POSITION {
         @Override
-        public void executeCommand(ActionsInput action, GameConfig gameConfig, ArrayNode output) {
+        public void executeCommand(final ActionsInput action, final GameConfig gameConfig,
+                                   final ArrayNode output) {
             ObjectNode cardAtPosition = JsonNodeFactory.instance.objectNode();
 
             cardAtPosition.put("command", action.getCommand());
@@ -144,7 +150,8 @@ public enum Debugs implements Command {
 
     GET_PLAYER_MANA {
         @Override
-        public void executeCommand(ActionsInput action, GameConfig gameConfig, ArrayNode output) {
+        public void executeCommand(final ActionsInput action, final GameConfig gameConfig,
+                                   final ArrayNode output) {
             ObjectNode playerMana = JsonNodeFactory.instance.objectNode();
 
             playerMana.put("command", action.getCommand());
@@ -162,7 +169,8 @@ public enum Debugs implements Command {
 
     ENV_CARDS_HAND {
         @Override
-        public void executeCommand(ActionsInput action, GameConfig gameConfig, ArrayNode output) {
+        public void executeCommand(final ActionsInput action, final GameConfig gameConfig,
+                                   final ArrayNode output) {
             ObjectNode envCardsInHand = JsonNodeFactory.instance.objectNode();
 
             envCardsInHand.put("command", action.getCommand());
@@ -192,7 +200,8 @@ public enum Debugs implements Command {
 
     FROZEN_CARDS_TABLE {
         @Override
-        public void executeCommand(ActionsInput action, GameConfig gameConfig, ArrayNode output) {
+        public void executeCommand(final ActionsInput action, final GameConfig gameConfig,
+                                   final ArrayNode output) {
             ObjectNode frznCardsOnTable = JsonNodeFactory.instance.objectNode();
 
             frznCardsOnTable.put("command", action.getCommand());
@@ -227,6 +236,4 @@ public enum Debugs implements Command {
             output.add(frznCardsOnTable);
         }
     }
-
-
 }

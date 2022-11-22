@@ -1,12 +1,12 @@
 package tableplayers;
 
-import commands.Actions;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import commands.Debugs;
 import fileio.ActionsInput;
 import fileio.GameInput;
 import fileio.Input;
 import fileio.StartGameInput;
+import commands.Debugs;
+import commands.Actions;
 import commands.Stats;
 
 import java.util.Collections;
@@ -54,7 +54,6 @@ public final class Table {
 
             for (ActionsInput action : gameInput.getActions()) {
                 switch (action.getCommand()) {
-                    // ACTIONS
                     case "endPlayerTurn" ->
                             Actions.END_TURN.executeCommand(null, gameConfig, null);
                     case "placeCard" ->
@@ -69,7 +68,6 @@ public final class Table {
                             Actions.USE_HERO_ABILITY.executeCommand(action, gameConfig, output);
                     case "useEnvironmentCard" ->
                             Actions.USE_ENVIRONMENT.executeCommand(action, gameConfig, output);
-                    // DEBUG
                     case "getCardsInHand" ->
                             Debugs.GET_CARDS_HAND.executeCommand(action, gameConfig, output);
                     case "getPlayerDeck" ->
@@ -88,7 +86,6 @@ public final class Table {
                             Debugs.ENV_CARDS_HAND.executeCommand(action, gameConfig, output);
                     case "getFrozenCardsOnTable" ->
                             Debugs.FROZEN_CARDS_TABLE.executeCommand(action, gameConfig, output);
-                    // STATS
                     case "getTotalGamesPlayed" ->
                             Stats.GET_TOTAL_GAMES.executeCommand(action, gameConfig, output);
                     case "getPlayerOneWins", "getPlayerTwoWins" ->
@@ -130,11 +127,11 @@ public final class Table {
         gameConfig.getPlayerOne().getPlayerHero().setActive(true);
         gameConfig.getPlayerTwo().getPlayerHero().setActive(true);
 
-        gameConfig.getPlayerOne().getCardsInHand().add(gameConfig.getPlayerOne().getDeck().get(0));
-        gameConfig.getPlayerOne().getDeck().remove(0);
+        gameConfig.getPlayerOne().getCardsInHand()
+                                 .add(gameConfig.getPlayerOne().getDeck().remove(0));
 
-        gameConfig.getPlayerTwo().getCardsInHand().add(gameConfig.getPlayerTwo().getDeck().get(0));
-        gameConfig.getPlayerTwo().getDeck().remove(0);
+        gameConfig.getPlayerTwo().getCardsInHand()
+                                 .add(gameConfig.getPlayerTwo().getDeck().remove(0));
 
         for (int i = 0; i < 2; i++) {
             gameConfig.getPlayerOne().getPlayerRows().get(i).clear();

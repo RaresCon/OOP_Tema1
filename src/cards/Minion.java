@@ -1,36 +1,11 @@
 package cards;
 
-import fileio.CardInput;
-
-public class Minion extends Card {
-    private int attackStat;
-    private int healthStat;
-    private int frozenStat;
-    private final MinionType minionType;
-    private boolean isTank = false;
-    private int homeRow;
-
-    public Minion(final CardInput cardInput, final CardType cardType, final MinionType minionType) {
-        name = cardInput.getName();
-        description = cardInput.getDescription();
-        mana = cardInput.getMana();
-        colors = cardInput.getColors();
-        attackStat = cardInput.getAttackDamage();
-        healthStat = cardInput.getHealth();
-        this.cardType = cardType;
-        this.minionType = minionType;
-        if (minionType.equals(MinionType.WARDEN) || minionType.equals(MinionType.GOLIATH)) {
-            isTank = true;
-        }
-        frozenStat = 0;
-
-        switch (minionType) {
-            case RIPPER, MIRAJ, GOLIATH, WARDEN -> homeRow = 1;
-            case SENTINEL, BERSERKER, CURSED, DISCIPLE -> homeRow = 0;
-            default -> {
-            }
-        }
-    }
+public abstract class Minion extends Card {
+    protected int attackStat;
+    protected int healthStat;
+    protected int frozenStat;
+    protected boolean isTank;
+    protected int homeRow;
 
     /**
      *
@@ -47,34 +22,6 @@ public class Minion extends Card {
      */
     public void minionAttack(final Hero hero) {
         hero.setHealthStat(hero.getHealthStat() - attackStat);
-        isActive = false;
-    }
-
-    /**
-     *
-     * @param cardAttacked
-     */
-    public void minionAbility(final Minion cardAttacked) {
-        switch (minionType) {
-            case RIPPER -> {
-                cardAttacked.attackStat -= 2;
-                if (cardAttacked.attackStat < 0) {
-                    cardAttacked.attackStat = 0;
-                }
-            }
-            case MIRAJ -> {
-                healthStat -= cardAttacked.healthStat;
-                cardAttacked.healthStat += healthStat;
-                healthStat = cardAttacked.healthStat - healthStat;
-            }
-            case CURSED -> {
-                cardAttacked.attackStat -= cardAttacked.healthStat;
-                cardAttacked.healthStat += cardAttacked.attackStat;
-                cardAttacked.attackStat = cardAttacked.healthStat - cardAttacked.attackStat;
-            }
-            default -> {
-            }
-        }
         isActive = false;
     }
 
@@ -130,26 +77,14 @@ public class Minion extends Card {
      *
      * @param attackStat
      */
-    public MinionType getMinionType() {
-        return minionType;
-    }
-
-    /**
-     *
-     * @param attackStat
-     */
     public boolean isTank() {
         return isTank;
     }
 
     /**
      *
-     * @param attackStat
+     * @return
      */
-    public void setTank(final boolean tank) {
-        isTank = tank;
-    }
-
     public int getHomeRow() {
         return homeRow;
     }

@@ -9,6 +9,7 @@ public abstract class Card {
     protected int mana;
     protected CardType cardType;
     protected boolean isActive;
+    protected int onFriendAbility;
 
     /**
      *
@@ -16,14 +17,6 @@ public abstract class Card {
      */
     public String getName() {
         return name;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public void setName(final String name) {
-        this.name = name;
     }
 
     /**
@@ -38,24 +31,8 @@ public abstract class Card {
      *
      * @return
      */
-    public void setDescription(final String description) {
-        this.description = description;
-    }
-
-    /**
-     *
-     * @return
-     */
     public List<String> getColors() {
         return colors;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public void setColors(final List<String> colors) {
-        this.colors = colors;
     }
 
     /**
@@ -96,5 +73,13 @@ public abstract class Card {
      */
     public void setActive(final boolean active) {
         isActive = active;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public int getOnFriendAbility() {
+        return onFriendAbility;
     }
 }

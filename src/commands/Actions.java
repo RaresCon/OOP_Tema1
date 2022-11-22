@@ -11,13 +11,13 @@ import fileio.ActionsInput;
 import tableplayers.GameConfig;
 
 import java.util.List;
-
-import static cards.MinionType.DISCIPLE;
+import cards.AbilityMinion;
 
 public enum Actions implements Command {
     END_TURN {
         @Override
-        public void executeCommand(ActionsInput action, GameConfig gameConfig, ArrayNode output) {
+        public void executeCommand(final ActionsInput action, final GameConfig gameConfig,
+                                   final ArrayNode output) {
             gameConfig.setTurnsNum(gameConfig.getTurnsNum() + 1);
             gameConfig.getPlayerOne().getPlayerHero().setActive(true);
             gameConfig.getPlayerTwo().getPlayerHero().setActive(true);
@@ -50,21 +50,20 @@ public enum Actions implements Command {
                 if (gameConfig.getManaIncrement() != gameConfig.getManaMaxIncrement()) {
                     gameConfig.setManaIncrement(gameConfig.getManaIncrement() + 1);
                 }
-                gameConfig.getPlayerOne().setMana(gameConfig.getPlayerOne().getMana()
-                        + gameConfig.getManaIncrement());
-                gameConfig.getPlayerTwo().setMana(gameConfig.getPlayerTwo().getMana()
-                        + gameConfig.getManaIncrement());
 
-                if (gameConfig.getPlayerOne().getDeck().size() != 0) {
-                    gameConfig.getPlayerOne().getCardsInHand().add(gameConfig.getPlayerOne()
-                            .getDeck().get(0));
-                    gameConfig.getPlayerOne().getDeck().remove(0);
+                gameConfig.getPlayerOne().setMana(gameConfig.getPlayerOne().getMana()
+                                                  + gameConfig.getManaIncrement());
+                gameConfig.getPlayerTwo().setMana(gameConfig.getPlayerTwo().getMana()
+                                                  + gameConfig.getManaIncrement());
+
+                if (!gameConfig.getPlayerOne().getDeck().isEmpty()) {
+                    gameConfig.getPlayerOne().getCardsInHand()
+                                             .add(gameConfig.getPlayerOne().getDeck().remove(0));
                 }
 
-                if (gameConfig.getPlayerTwo().getDeck().size() != 0) {
-                    gameConfig.getPlayerTwo().getCardsInHand().add(gameConfig.getPlayerTwo()
-                            .getDeck().get(0));
-                    gameConfig.getPlayerTwo().getDeck().remove(0);
+                if (!gameConfig.getPlayerTwo().getDeck().isEmpty()) {
+                    gameConfig.getPlayerTwo().getCardsInHand()
+                                             .add(gameConfig.getPlayerTwo().getDeck().remove(0));
                 }
             }
         }
@@ -72,11 +71,8 @@ public enum Actions implements Command {
 
     PLACE_CARD {
         @Override
-        public void executeCommand(ActionsInput action, GameConfig gameConfig, ArrayNode output) {
-            if (action.getHandIdx() >= gameConfig.getActivePlayer().getCardsInHand().size()) {
-                return;
-            }
-
+        public void executeCommand(final ActionsInput action, final GameConfig gameConfig,
+                                   final ArrayNode output) {
             ObjectNode error = ErrorMessages.errorFactory(action, gameConfig);
 
             if (error != null) {
@@ -88,20 +84,18 @@ public enum Actions implements Command {
             Minion currentCard = (Minion) currentPlayerCards.get(action.getHandIdx());
 
             currentCard.setActive(true);
-            gameConfig.getActivePlayer().getPlayerRows().get(currentCard.getHomeRow()).add(currentCard);
+            gameConfig.getActivePlayer().getPlayerRows().get(currentCard.getHomeRow())
+                                        .add((Minion) gameConfig.getActivePlayer()
+                                        .getCardsInHand().remove(action.getHandIdx()));
             gameConfig.getActivePlayer().setMana(gameConfig.getActivePlayer().getMana()
-                    - currentCard.getMana());
-            gameConfig.getActivePlayer().getCardsInHand().remove(action.getHandIdx());
+                                                 - currentCard.getMana());
         }
     },
 
     USE_ENVIRONMENT {
         @Override
-        public void executeCommand(ActionsInput action, GameConfig gameConfig, ArrayNode output) {
-            if (action.getHandIdx() >= gameConfig.getActivePlayer().getCardsInHand().size()) {
-                return;
-            }
-
+        public void executeCommand(final ActionsInput action, final GameConfig gameConfig,
+                                   final ArrayNode output) {
             ObjectNode error = ErrorMessages.errorFactory(action, gameConfig);
 
             if (error != null) {
@@ -112,19 +106,24 @@ public enum Actions implements Command {
             List<Card> currentPlayerCards = gameConfig.getActivePlayer().getCardsInHand();
 
             Environment currentCard = (Environment) currentPlayerCards.get(action.getHandIdx());
-            List<Minion> affectedRow = gameConfig.getAttackedRow(gameConfig, action.getAffectedRow());
+            List<Minion> affectedRow = gameConfig.getAttackedRow(action.getAffectedRow());
 
-            currentCard.environmentAbility(affectedRow);
+            Minion resultMinion = currentCard.useEnvAbility(affectedRow);
+            if (resultMinion != null) {
+                gameConfig.getActivePlayer().getPlayerRows().get(resultMinion.getHomeRow())
+                          .add(resultMinion);
+            }
 
             gameConfig.getActivePlayer().getCardsInHand().remove(action.getHandIdx());
             gameConfig.getActivePlayer().setMana(gameConfig.getActivePlayer().getMana()
-                    - currentCard.getMana());
+                                                 - currentCard.getMana());
         }
     },
 
     USE_CARD_ATTACK {
         @Override
-        public void executeCommand(ActionsInput action, GameConfig gameConfig, ArrayNode output) {
+        public void executeCommand(final ActionsInput action, final GameConfig gameConfig,
+                                   final ArrayNode output) {
             ObjectNode error = ErrorMessages.errorFactory(action, gameConfig);
 
             if (error != null) {
@@ -132,23 +131,16 @@ public enum Actions implements Command {
                 return;
             }
 
-            Minion cardAttacker = gameConfig.getCardFromTable(action.getCardAttacker().getX(),
+            Minion cardAttacker = Utility.getCardFromTable(action.getCardAttacker().getX(),
                     action.getCardAttacker().getY(), gameConfig);
-            Minion cardAttacked = gameConfig.getCardFromTable(action.getCardAttacked().getX(),
+            Minion cardAttacked = Utility.getCardFromTable(action.getCardAttacked().getX(),
                     action.getCardAttacked().getY(), gameConfig);
 
             int xDefence = action.getCardAttacked().getX();
 
-            if (gameConfig.getActivePlayer().equals(gameConfig.getPlayerOne())) {
-                cardAttacker.minionAttack(cardAttacked);
-                if (cardAttacked.getHealthStat() <= 0) {
-                    gameConfig.getPlayerTwo().getPlayerRows().get(xDefence).remove(cardAttacked);
-                }
-            } else {
-                cardAttacker.minionAttack(cardAttacked);
-                if (cardAttacked.getHealthStat() <= 0) {
-                    gameConfig.getPlayerOne().getPlayerRows().get(-(xDefence - 3)).remove(cardAttacked);
-                }
+            cardAttacker.minionAttack(cardAttacked);
+            if (cardAttacked.getHealthStat() <= 0) {
+                gameConfig.getAttackedRow(xDefence).remove(cardAttacked);
             }
 
             cardAttacker.setActive(false);
@@ -157,7 +149,8 @@ public enum Actions implements Command {
 
     USE_CARD_ABILITY {
         @Override
-        public void executeCommand(ActionsInput action, GameConfig gameConfig, ArrayNode output) {
+        public void executeCommand(final ActionsInput action, final GameConfig gameConfig,
+                                   final ArrayNode output) {
             ObjectNode error = ErrorMessages.errorFactory(action, gameConfig);
 
             if (error != null) {
@@ -165,25 +158,19 @@ public enum Actions implements Command {
                 return;
             }
 
-            Minion cardAttacker = gameConfig.getCardFromTable(action.getCardAttacker().getX(),
-                    action.getCardAttacker().getY(), gameConfig);
-            Minion cardAttacked = gameConfig.getCardFromTable(action.getCardAttacked().getX(),
-                    action.getCardAttacked().getY(), gameConfig);
+            AbilityMinion cardAttacker = (AbilityMinion) Utility
+                                         .getCardFromTable(action.getCardAttacker().getX(),
+                                                           action.getCardAttacker().getY(),
+                                                           gameConfig);
+            Minion cardAttacked = Utility.getCardFromTable(action.getCardAttacked().getX(),
+                                                           action.getCardAttacked().getY(),
+                                                           gameConfig);
 
             int xDefence = action.getCardAttacked().getX();
 
-            if (cardAttacker.getMinionType().equals(DISCIPLE)) {
-                cardAttacked.setHealthStat(cardAttacked.getHealthStat() + 2);
-            } else if (gameConfig.getActivePlayer().equals(gameConfig.getPlayerOne())) {
-                cardAttacker.minionAbility(cardAttacked);
-                if (cardAttacked.getHealthStat() <= 0) {
-                    gameConfig.getPlayerTwo().getPlayerRows().get(xDefence).remove(cardAttacked);
-                }
-            } else {
-                cardAttacker.minionAbility(cardAttacked);
-                if (cardAttacked.getHealthStat() <= 0) {
-                    gameConfig.getPlayerOne().getPlayerRows().get(-(xDefence - 3)).remove(cardAttacked);
-                }
+            cardAttacker.useMinionAbility(cardAttacked);
+            if (cardAttacked.getHealthStat() <= 0) {
+                gameConfig.getAttackedRow(xDefence).remove(cardAttacked);
             }
 
             cardAttacker.setActive(false);
@@ -192,7 +179,8 @@ public enum Actions implements Command {
 
     ATTACK_HERO {
         @Override
-        public void executeCommand(ActionsInput action, GameConfig gameConfig, ArrayNode output) {
+        public void executeCommand(final ActionsInput action, final GameConfig gameConfig,
+                                   final ArrayNode output) {
             ObjectNode error = ErrorMessages.errorFactory(action, gameConfig);
 
             if (error != null) {
@@ -200,7 +188,7 @@ public enum Actions implements Command {
                 return;
             }
 
-            Minion cardAttacker = gameConfig.getCardFromTable(action.getCardAttacker().getX(),
+            Minion cardAttacker = Utility.getCardFromTable(action.getCardAttacker().getX(),
                                   action.getCardAttacker().getY(), gameConfig);
 
             cardAttacker.minionAttack(gameConfig.getInactivePlayer().getPlayerHero());
@@ -213,7 +201,7 @@ public enum Actions implements Command {
                     winStatus.put("gameEnded", "Player two killed the enemy hero.");
                 }
                 gameConfig.getActivePlayer().setGameWins(gameConfig.getActivePlayer()
-                        .getGameWins() + 1);
+                                                                   .getGameWins() + 1);
                 output.add(winStatus);
             }
         }
@@ -221,7 +209,8 @@ public enum Actions implements Command {
 
     USE_HERO_ABILITY {
         @Override
-        public void executeCommand(ActionsInput action, GameConfig gameConfig, ArrayNode output) {
+        public void executeCommand(final ActionsInput action, final GameConfig gameConfig,
+                                   final ArrayNode output) {
             ObjectNode error = ErrorMessages.errorFactory(action, gameConfig);
 
             if (error != null) {
@@ -230,12 +219,12 @@ public enum Actions implements Command {
             }
 
             gameConfig.getActivePlayer().getPlayerHero()
-                    .heroAbility(gameConfig.
-                            getAttackedRow(gameConfig, action.getAffectedRow()));
+                                        .useHeroAbility(gameConfig
+                                        .getAttackedRow(action.getAffectedRow()));
 
             gameConfig.getActivePlayer().setMana(gameConfig.getActivePlayer().getMana()
-                    - gameConfig.getActivePlayer().getPlayerHero()
-                    .getMana());
+                                                 - gameConfig.getActivePlayer().getPlayerHero()
+                                                 .getMana());
         }
     }
 }

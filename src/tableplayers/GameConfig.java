@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameConfig {
-    private Player playerOne = new Player();
-    private Player playerTwo = new Player();
+    private final Player playerOne = new Player();
+    private final Player playerTwo = new Player();
     private Player activePlayer = null;
     private Player inactivePlayer = null;
     private int manaIncrement = 1;
@@ -28,36 +28,17 @@ public class GameConfig {
         }
     }
 
-    public Minion getCardFromTable(final int x, final int y, final GameConfig gameConfig) {
-        if (x < 2 && y < gameConfig.getPlayerTwo().getPlayerRows().get(x).size()) {
-            return gameConfig.getPlayerTwo().getPlayerRows().get(x).get(y);
-        } else if (x > 1 && y < gameConfig.getPlayerOne().getPlayerRows().get(-(x - 3)).size()) {
-            return gameConfig.getPlayerOne().getPlayerRows().get(-(x - 3)).get(y);
-        }
-
-        return null;
-    }
-
-    public List<Minion> getAttackedRow(GameConfig gameConfig, int currentIdx) {
-        if (currentIdx > 1) {
-            return gameConfig.getPlayerOne().getPlayerRows().get(-(currentIdx - 3));
-        } else {
-            return gameConfig.getPlayerTwo().getPlayerRows().get(currentIdx);
-        }
-    }
-
     /**
      *
-     * @param player
+     * @param currentIdx
      * @return
      */
-    public boolean checkTankOnRows(final Player player) {
-        for (Minion minion : player.getPlayerRows().get(1)) {
-            if (minion.isTank()) {
-                return true;
-            }
+    public List<Minion> getAttackedRow(final int currentIdx) {
+        if (currentIdx > 1) {
+            return playerOne.getPlayerRows().get(-(currentIdx - 3));
+        } else {
+            return playerTwo.getPlayerRows().get(currentIdx);
         }
-        return false;
     }
 
     /**
@@ -92,11 +73,19 @@ public class GameConfig {
         this.activePlayer = activePlayer;
     }
 
+    /**
+     *
+     * @return
+     */
     public Player getInactivePlayer() {
         return inactivePlayer;
     }
 
-    public void setInactivePlayer(Player inactivePlayer) {
+    /**
+     *
+     * @param inactivePlayer
+     */
+    public void setInactivePlayer(final Player inactivePlayer) {
         this.inactivePlayer = inactivePlayer;
     }
 

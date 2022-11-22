@@ -10,7 +10,8 @@ import tableplayers.GameConfig;
 public enum Stats implements Command {
     GET_TOTAL_GAMES {
         @Override
-        public void executeCommand(ActionsInput action, GameConfig gameConfig, ArrayNode output) {
+        public void executeCommand(final ActionsInput action, final GameConfig gameConfig,
+                                   final ArrayNode output) {
             ObjectNode totalGames = JsonNodeFactory.instance.objectNode();
 
             totalGames.put("command", action.getCommand());
@@ -23,7 +24,8 @@ public enum Stats implements Command {
 
     GET_WINS {
         @Override
-        public void executeCommand(ActionsInput action, GameConfig gameConfig, ArrayNode output) {
+        public void executeCommand(final ActionsInput action, final GameConfig gameConfig,
+                                   final ArrayNode output) {
             ObjectNode playerWins = JsonNodeFactory.instance.objectNode();
 
             playerWins.put("command", action.getCommand());
