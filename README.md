@@ -59,6 +59,8 @@ The list of commands and their use can be found on the following link [OCW](http
 
 In the future, I will add other commands, abilities and attributes, some found in the other games (like destroying all cards on a row, applying buffs to the adiacent cards and hero secrets that are triggered when attacked), some original ones. But until then, **the battle for *Truyssau* continues!**
 
+![Battle](https://github.com/RaresCon/OOP_Tema1/blob/main/Screenshots/tumblr_mzwultHB6y1rfyiu4o1_1280.jpg)
+
 ## License - Copyright 2022
 
 [Github - GwentStone](https://github.com/RaresCon/OOP_Tema1)
