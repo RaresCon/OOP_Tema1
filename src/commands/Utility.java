@@ -19,9 +19,9 @@ public final class Utility {
     }
 
     /**
-     *
-     * @param cards
-     * @return
+     * function to convert a list of cards to an ArrayNode that can be added to a Json file
+     * @param cards list of cards to be converted to ObjectNodes
+     * @return ArrayNode of the cards to be added to Json files
      */
     public static ArrayNode cardListObjectNode(final List<Card> cards) {
         ArrayNode cardsConversion = JsonNodeFactory.instance.arrayNode();
@@ -35,9 +35,9 @@ public final class Utility {
     }
 
     /**
-     *
-     * @param row
-     * @return
+     * function to convert a row of cards to an ArrayNode that can be added to a Json file
+     * @param row list of cards to be converted to ObjectNodes
+     * @return ArrayNode of the row to be added to Json files
      */
     public static ArrayNode rowObjectNode(final List<Minion> row) {
         ArrayNode cardsConversion = JsonNodeFactory.instance.arrayNode();
@@ -51,9 +51,9 @@ public final class Utility {
     }
 
     /**
-     *
-     * @param card
-     * @return
+     * function to convert a single card to an ObjectNode
+     * @param card card to be converted to ObjectNode
+     * @return ObjectNode of the card to be added to Json files
      */
     public static ObjectNode cardObjectNode(final Card card) {
         ObjectNode cardConversion = JsonNodeFactory.instance.objectNode();
@@ -75,8 +75,8 @@ public final class Utility {
 
     /**
      *
-     * @param colors
-     * @return
+     * @param colors list of colors of a card to be converted to an ArrayNode
+     * @return ArrayNode of the colors to be added to Json files
      */
     public static ArrayNode colorsObject(final List<String> colors) {
         ArrayNode colorsConversion = JsonNodeFactory.instance.arrayNode();
@@ -90,10 +90,10 @@ public final class Utility {
 
     /**
      *
-     * @param x
-     * @param y
-     * @param gameConfig
-     * @return
+     * @param x x coordinate of the card
+     * @param y y coordinate of the card
+     * @param gameConfig game configuration at the moment, including the cards on rows
+     * @return Minion card on table (at x/y) that is requested by the caller
      */
     public static Minion getCardFromTable(final int x, final int y, final GameConfig gameConfig) {
         if (x < 2 && y < gameConfig.getPlayerTwo().getPlayerRows().get(x).size()) {
@@ -106,9 +106,9 @@ public final class Utility {
     }
 
     /**
-     *
-     * @param player
-     * @return
+     * function to check if a player has any tank card on their first row
+     * @param player player that is checked for tank cards on its first row
+     * @return true if a tank card is present, false otherwise
      */
     public static boolean checkTankOnRows(final Player player) {
         for (Minion minion : player.getPlayerRows().get(1)) {

@@ -12,6 +12,7 @@ import tableplayers.GameConfig;
 
 import java.util.List;
 import cards.AbilityMinion;
+import tableplayers.GameConstants;
 
 public enum Actions implements Command {
     END_TURN {
@@ -47,7 +48,7 @@ public enum Actions implements Command {
             }
 
             if (gameConfig.getTurnsNum() % 2 == 0) {
-                if (gameConfig.getManaIncrement() != gameConfig.getManaMaxIncrement()) {
+                if (gameConfig.getManaIncrement() != GameConstants.MaxManaIncrement) {
                     gameConfig.setManaIncrement(gameConfig.getManaIncrement() + 1);
                 }
 

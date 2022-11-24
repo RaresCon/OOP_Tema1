@@ -19,8 +19,8 @@ public final class Table {
     }
 
     /**
-     *
-     * @return
+     * getter
+     * @return Table instance
      */
     public static Table getTableInstance() {
         if (instance == null) {
@@ -31,14 +31,14 @@ public final class Table {
     }
 
     /**
-     *
-     * @param input
-     * @param output
+     * main function that sets up each game to be played
+     * @param input given input about players and actions
+     * @param output the output to which the results are written
      */
     public void playGame(final Input input, final ArrayNode output) {
         GameConfig gameConfig = new GameConfig();
 
-        gameConfig.initRows(2);
+        gameConfig.initRows(GameConstants.NumOfRows);
 
         for (GameInput gameInput : input.getGames()) {
             gameConfig.setTurnsNum(0);
@@ -98,10 +98,10 @@ public final class Table {
 }
 
     /**
-     *
-     * @param gameConfig
-     * @param input
-     * @param gameInput
+     * function to ready up/reset players for each game
+     * @param gameConfig game configuration (rows and players)
+     * @param input given input about players and actions
+     * @param gameInput current game input from players
      */
     private void readyPlayersForGames(final GameConfig gameConfig, final Input input,
                                       final StartGameInput gameInput) {
@@ -133,7 +133,7 @@ public final class Table {
         gameConfig.getPlayerTwo().getCardsInHand()
                                  .add(gameConfig.getPlayerTwo().getDeck().remove(0));
 
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < GameConstants.NumOfRows; i++) {
             gameConfig.getPlayerOne().getPlayerRows().get(i).clear();
             gameConfig.getPlayerTwo().getPlayerRows().get(i).clear();
         }

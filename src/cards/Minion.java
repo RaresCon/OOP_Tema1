@@ -1,5 +1,7 @@
 package cards;
 
+import fileio.CardInput;
+
 public abstract class Minion extends Card {
     protected int attackStat;
     protected int healthStat;
@@ -7,9 +9,13 @@ public abstract class Minion extends Card {
     protected boolean isTank;
     protected int homeRow;
 
+    protected Minion(final CardInput cardInput) {
+        super(cardInput);
+    }
+
     /**
-     *
-     * @param minion
+     * function to use the attack on other minion
+     * @param minion the attacked minion
      */
     public void minionAttack(final Minion minion) {
         minion.healthStat -= attackStat;
@@ -17,8 +23,8 @@ public abstract class Minion extends Card {
     }
 
     /**
-     *
-     * @param hero
+     * function to use the attack on a hero
+     * @param hero the attacked hero
      */
     public void minionAttack(final Hero hero) {
         hero.setHealthStat(hero.getHealthStat() - attackStat);
@@ -26,91 +32,66 @@ public abstract class Minion extends Card {
     }
 
     /**
-     *
-     * @return
+     * getter
+     * @return card's attack
      */
     public int getAttackStat() {
         return attackStat;
     }
 
     /**
-     *
-     * @param attackStat
+     * setter
+     * @param attackStat the new attack for the card
      */
     public void setAttackStat(final int attackStat) {
         this.attackStat = attackStat;
     }
 
     /**
-     *
-     * @param attackStat
+     * getter
+     * @return card's health
      */
     public int getHealthStat() {
         return healthStat;
     }
 
     /**
-     *
-     * @param attackStat
+     * setter
+     * @param healthStat the new health for the card
      */
     public void setHealthStat(final int healthStat) {
         this.healthStat = healthStat;
     }
 
     /**
-     *
-     * @param attackStat
+     * setter
+     * @param frozenStat how many rounds (one round = two turns) a card is frozen
      */
     public void setFrozenStat(final int frozenStat) {
         this.frozenStat = frozenStat;
     }
 
     /**
-     *
-     * @param attackStat
+     * getter
+     * @return the current frozenStat
      */
     public int isFrozenStat() {
         return frozenStat;
     }
 
     /**
-     *
-     * @param attackStat
+     * getter
+     * @return if a card is a tank
      */
     public boolean isTank() {
         return isTank;
     }
 
     /**
-     *
-     * @return
+     * getter
+     * @return the row on which a card is placed at first
      */
     public int getHomeRow() {
         return homeRow;
-    }
-
-    /**
-     *
-     * @param attackStat
-     */
-    public String toString() {
-        return "Minion{"
-                +  "mana="
-                + mana
-                +  ", attackDamage="
-                + attackStat
-                + ", health="
-                + healthStat
-                +  ", description='"
-                + description
-                + '\''
-                + ", colors="
-                + colors
-                + ", name='"
-                +  ""
-                + name
-                + '\''
-                + '}'
-                + '\n';
     }
 }

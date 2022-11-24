@@ -11,15 +11,11 @@ public class GameConfig {
     private Player activePlayer = null;
     private Player inactivePlayer = null;
     private int manaIncrement = 1;
-    private final int manaMaxIncrement = 10;
-    private final int maxCardsOnRow = 5;
     private int turnsNum;
 
     /**
-     *
-     * @param playerOne
-     * @param playerTwo
-     * @param numRows
+     * function to initialize the rows for each player
+     * @param numRows number of rows available on the table
      */
     public void initRows(final int numRows) {
         for (int i = 0; i < numRows; i++) {
@@ -29,9 +25,9 @@ public class GameConfig {
     }
 
     /**
-     *
-     * @param currentIdx
-     * @return
+     * function that resolves the index of the row for any player (arithmetically)
+     * @param currentIdx the index given as input by the player
+     * @return the row that is attacked
      */
     public List<Minion> getAttackedRow(final int currentIdx) {
         if (currentIdx > 1) {
@@ -42,98 +38,82 @@ public class GameConfig {
     }
 
     /**
-     *
-     * @return
+     * getter
+     * @return player one object
      */
     public Player getPlayerOne() {
         return playerOne;
     }
 
     /**
-     *
-     * @return
+     * getter
+     * @return player two object
      */
     public Player getPlayerTwo() {
         return playerTwo;
     }
 
     /**
-     *
-     * @return
+     * getter
+     * @return active player object
      */
     public Player getActivePlayer() {
         return activePlayer;
     }
 
     /**
-     *
-     * @param activePlayer
+     * setter
+     * @param activePlayer which player to set active
      */
     public void setActivePlayer(final Player activePlayer) {
         this.activePlayer = activePlayer;
     }
 
     /**
-     *
-     * @return
+     * getter
+     * @return inactive player object
      */
     public Player getInactivePlayer() {
         return inactivePlayer;
     }
 
     /**
-     *
-     * @param inactivePlayer
+     * setter
+     * @param inactivePlayer which player to set inactive
      */
     public void setInactivePlayer(final Player inactivePlayer) {
         this.inactivePlayer = inactivePlayer;
     }
 
     /**
-     *
-     * @return
+     * getter
+     * @return current mana increment after every two turns
      */
     public int getManaIncrement() {
         return manaIncrement;
     }
 
     /**
-     *
-     * @param manaIncrement
+     * setter
+     * @param manaIncrement new mana increment
      */
     public void setManaIncrement(final int manaIncrement) {
         this.manaIncrement = manaIncrement;
     }
 
     /**
-     *
-     * @return
+     * getter
+     * @return number of turns that passed
      */
     public int getTurnsNum() {
         return turnsNum;
     }
 
     /**
-     *
-     * @param turnsNum
+     * setter
+     * @param turnsNum number of turns that passed
      */
     public void setTurnsNum(final int turnsNum) {
         this.turnsNum = turnsNum;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public int getManaMaxIncrement() {
-        return manaMaxIncrement;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public int getMaxCardsOnRow() {
-        return maxCardsOnRow;
     }
 }

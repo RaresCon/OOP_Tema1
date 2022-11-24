@@ -9,10 +9,7 @@ public class AbilityMinion extends Minion {
     public AbilityMinion(final CardInput cardInput, final CardType cardType, final boolean isTank,
                          final int homeRow, final int onFriendAbility,
                          final OnCardAbilities ability) {
-        name = cardInput.getName();
-        description = cardInput.getDescription();
-        mana = cardInput.getMana();
-        colors = cardInput.getColors();
+        super(cardInput);
         attackStat = cardInput.getAttackDamage();
         healthStat = cardInput.getHealth();
         minionAbility = ability;
@@ -23,8 +20,8 @@ public class AbilityMinion extends Minion {
     }
 
     /**
-     *
-     * @param cardAttacked
+     * function to use the minion ability
+     * @param cardAttacked the card (minion) that is affected by the ability
      */
     public void useMinionAbility(final Minion cardAttacked) {
         minionAbility.useAbility(this, cardAttacked);

@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import commands.Utility;
 import fileio.ActionsInput;
 import tableplayers.GameConfig;
+import tableplayers.GameConstants;
 
 import java.util.List;
 
@@ -68,7 +69,8 @@ public enum ErrorHandler {
                 Minion currentCardMin = (Minion) currentPlayerCards.get(action.getHandIdx());
 
                 if (gameConfig.getActivePlayer().getPlayerRows()
-                        .get(currentCardMin.getHomeRow()).size() == gameConfig.getMaxCardsOnRow()) {
+                                                .get(currentCardMin.getHomeRow()).size()
+                                                == GameConstants.MaxCardsOnRow) {
                     error.put("error", ROW_SPACE_ERR.getDescription());
 
                     return error;
@@ -123,7 +125,7 @@ public enum ErrorHandler {
                     return error;
                 } else if (currentCardEnv.getEnvAbility().equals(OnRowAbilities.STEAL_CARD)
                         && gameConfig.getAttackedRow(affectedRowIdx).size()
-                        == gameConfig.getMaxCardsOnRow()) {
+                        == GameConstants.MaxCardsOnRow) {
                     error.put("error", STEAL_ERR.getDescription());
 
                     return error;
@@ -324,9 +326,9 @@ public enum ErrorHandler {
 
         /**
          *
-         * @param action
-         * @param gameConfig
-         * @return
+         * @param action action to be checked for errors in its input from the player
+         * @param gameConfig game configuration at the moment (cards on table and players)
+         * @return ObjectNode generated if an error is present in the input, null if otherwise
          */
         public abstract ObjectNode checkError(ActionsInput action, GameConfig gameConfig);
     }

@@ -2,27 +2,25 @@ package cards;
 
 import abilities.OnRowAbilities;
 import fileio.CardInput;
+import tableplayers.GameConstants;
 
 import java.util.List;
 
 public class Hero extends Card {
-    private int healthStat = 30;
+    private int healthStat = GameConstants.StdHeroHealth;
     private final OnRowAbilities heroAbility;
 
     public Hero(final CardInput cardInput, final CardType cardType,
                 final int onFriendAbility, final OnRowAbilities ability) {
-        name = cardInput.getName();
-        description = cardInput.getDescription();
-        colors = cardInput.getColors();
-        mana = cardInput.getMana();
+        super(cardInput);
         heroAbility = ability;
         this.cardType = cardType;
         this.onFriendAbility = onFriendAbility;
     }
 
     /**
-     *
-     * @param affectedRow
+     * function to apply the hero ability on a row
+     * @param affectedRow the row on which the ability is applied
      */
     public void useHeroAbility(final List<Minion> affectedRow) {
         heroAbility.useAbility(affectedRow);
@@ -30,40 +28,18 @@ public class Hero extends Card {
     }
 
     /**
-     *
-     * @return
+     * getter
+     * @return hero's health
      */
     public int getHealthStat() {
         return healthStat;
     }
 
     /**
-     *
-     * @param healthStat
+     * setter
+     * @param healthStat new hero health
      */
     public void setHealthStat(final int healthStat) {
         this.healthStat = healthStat;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public String toString() {
-        return "Hero{"
-                +  "mana="
-                + mana
-                + ", health="
-                + healthStat
-                +  ", description='"
-                + description
-                + '\''
-                + ", colors="
-                + colors
-                + ", name='"
-                +  ""
-                + name
-                + '\''
-                + '}';
     }
 }

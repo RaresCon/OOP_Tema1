@@ -1,5 +1,7 @@
 package cards;
 
+import fileio.CardInput;
+
 import java.util.List;
 
 public abstract class Card {
@@ -11,73 +13,71 @@ public abstract class Card {
     protected boolean isActive;
     protected int onFriendAbility;
 
+    protected Card(final CardInput cardInput) {
+        name = cardInput.getName();
+        description = cardInput.getDescription();
+        colors = cardInput.getColors();
+        mana = cardInput.getMana();
+    }
+
     /**
-     *
-     * @return
+     * getter
+     * @return name of the card
      */
     public String getName() {
         return name;
     }
 
     /**
-     *
-     * @return
+     * getter
+     * @return description of the card
      */
     public String getDescription() {
         return description;
     }
 
     /**
-     *
-     * @return
+     * getter
+     * @return color list of the card
      */
     public List<String> getColors() {
         return colors;
     }
 
     /**
-     *
-     * @return
+     * getter
+     * @return card's mana cost
      */
     public int getMana() {
         return mana;
     }
 
     /**
-     *
-     * @return
-     */
-    public void setMana(final int mana) {
-        this.mana = mana;
-    }
-
-    /**
-     *
-     * @return
+     * getter
+     * @return the card type of the card
      */
     public CardType getCardType() {
         return cardType;
     }
 
     /**
-     *
-     * @return
+     * getter
+     * @return if the card is active
      */
     public boolean isActive() {
         return isActive;
     }
 
     /**
-     *
-     * @return
+     * setter
      */
     public void setActive(final boolean active) {
         isActive = active;
     }
 
     /**
-     *
-     * @return
+     * getter
+     * @return 1 if the ability is friendly, -1 if it's not, 0 if there is no ability
      */
     public int getOnFriendAbility() {
         return onFriendAbility;

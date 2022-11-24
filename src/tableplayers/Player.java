@@ -22,25 +22,25 @@ public class Player {
     private final List<List<Minion>> playerRows = new ArrayList<>();
 
     /**
-     *
-     * @param mana
+     * setter
+     * @param mana current player mana
      */
     public void setMana(final int mana) {
         this.mana = mana;
     }
 
     /**
-     *
-     * @return
+     * getter
+     * @return current player mana
      */
     public int getMana() {
         return mana;
     }
 
     /**
-     *
-     * @param decksInput
-     * @param index
+     * function to set player's deck for a game into this class (deck)
+     * @param decksInput all decks as input from the player
+     * @param index deck index chosen by the player to be constructed in this class
      */
     public void setDeck(final DecksInput decksInput, final int index) {
             for (CardInput cardInput : decksInput.getDecks().get(index)) {
@@ -74,74 +74,63 @@ public class Player {
     }
 
     /**
-     *
-     * @return
+     * getter
+     * @return player's deck
      */
     public List<Card> getDeck() {
         return deck;
     }
 
     /**
-     *
-     * @param cardInput
+     * setter for player's hero
+     * @param cardInput hero input as CardInput to be constructed to this class
      */
     public void setPlayerHero(final CardInput cardInput) {
         switch (cardInput.getName()) {
-            case "Lord Royce":
-                playerHero = new Hero(cardInput, HERO, -1, SUBZERO);
-                break;
-
-            case "Empress Thorina":
-                playerHero = new Hero(cardInput, HERO, -1, LOWBLOW);
-                break;
-
-            case "King Mudface":
-                playerHero = new Hero(cardInput, HERO, 1, EARTHBORN);
-                break;
-
-            case "General Kocioraw":
-                playerHero = new Hero(cardInput, HERO, 1, BLOODTHIRST);
-                break;
-            default:
-                break;
+            case "Lord Royce" -> playerHero = new Hero(cardInput, HERO, -1, SUBZERO);
+            case "Empress Thorina" -> playerHero = new Hero(cardInput, HERO, -1, LOWBLOW);
+            case "King Mudface" -> playerHero = new Hero(cardInput, HERO, 1, EARTHBORN);
+            case "General Kocioraw" -> playerHero = new Hero(cardInput, HERO, 1, BLOODTHIRST);
+            default -> {
+            }
         }
     }
 
     /**
-     *
-     * @return
+     * getter
+     * @return player's hero
      */
     public Hero getPlayerHero() {
         return playerHero;
     }
 
     /**
-     *
-     * @return
+     * getter
+     * @return cards present in player's hand (added from deck)
      */
     public List<Card> getCardsInHand() {
         return cardsInHand;
     }
 
     /**
-     *
-     * @return
+     * getter
+     * @return number of games won by a player
      */
     public int getGameWins() {
         return gameWins;
     }
 
     /**
-     *
-     * @param gameWins
+     * setter
+     * @param gameWins number of games won by a player
      */
     public void setGameWins(final int gameWins) {
         this.gameWins = gameWins;
     }
 
     /**
-     *
-     * @return
+     * getter
+     * @return player's rows
      */
     public List<List<Minion>> getPlayerRows() {
         return playerRows;

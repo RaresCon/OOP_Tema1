@@ -105,9 +105,10 @@ public enum OnRowAbilities {
     };
 
     /**
-     *
-     * @param affectedRow
-     * @return
+     * function to apply the environment/hero ability on a row
+     * @param affectedRow the row on which the ability will be applied
+     * @return it returns the stolen Minion card (for STEAL_CARD), null otherwise
+     *         may return a Minion for other abilities that may need this
      */
     public abstract Minion useAbility(List<Minion> affectedRow);
 }

@@ -10,49 +10,26 @@ public class Environment extends Card {
 
     public Environment(final CardInput cardInput, final CardType cardType,
                        final OnRowAbilities ability) {
-        name = cardInput.getName();
-        description = cardInput.getDescription();
-        mana = cardInput.getMana();
-        colors = cardInput.getColors();
+        super(cardInput);
         envAbility = ability;
         this.cardType = cardType;
     }
 
     /**
-     *
-     * @param affectedRow
-     * @return
+     * function to use the environment ability
+     * @param affectedRow the row on which the ability is applied
+     * @return it returns the stolen Minion card (for STEAL_CARD), null otherwise
+     *         may return a Minion for other abilities that may need this
      */
     public Minion useEnvAbility(final List<Minion> affectedRow) {
         return envAbility.useAbility(affectedRow);
     }
 
     /**
-     *
-     * @return
+     * getter
+     * @return card's environment ability
      */
     public OnRowAbilities getEnvAbility() {
         return envAbility;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public String toString() {
-        return "Environment{"
-                +  "mana="
-                + mana
-                +  ", description='"
-                + description
-                + '\''
-                + ", colors="
-                + colors
-                + ", name='"
-                +  ""
-                + name
-                + '\''
-                + '}'
-                + '\n';
     }
 }

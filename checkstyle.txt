@@ -1,11 +1,19 @@
 Starting audit...
-[ERROR] C:\Users\nitro\IdeaProjects\OOP_Tema1\.\src\cards\Hero.java:9:30: '30' is a magic number. [MagicNumber]
-[ERROR] C:\Users\nitro\IdeaProjects\OOP_Tema1\.\src\commands\Utility.java:101:85: '3' is a magic number. [MagicNumber]
-[ERROR] C:\Users\nitro\IdeaProjects\OOP_Tema1\.\src\commands\Utility.java:102:72: '3' is a magic number. [MagicNumber]
-[ERROR] C:\Users\nitro\IdeaProjects\OOP_Tema1\.\src\errors\ErrorHandler.java:112:66: '3' is a magic number. [MagicNumber]
-[ERROR] C:\Users\nitro\IdeaProjects\OOP_Tema1\.\src\tableplayers\GameConfig.java:38:65: '3' is a magic number. [MagicNumber]
-[ERROR] C:\Users\nitro\IdeaProjects\OOP_Tema1\.\src\tableplayers\Player.java:3:13: Using the '.*' form of import should be avoided - cards.*. [AvoidStarImport]
-[ERROR] C:\Users\nitro\IdeaProjects\OOP_Tema1\.\src\tableplayers\Player.java:13:40: Using the '.*' form of import should be avoided - abilities.OnCardAbilities.*. [AvoidStarImport]
-[ERROR] C:\Users\nitro\IdeaProjects\OOP_Tema1\.\src\tableplayers\Player.java:14:39: Using the '.*' form of import should be avoided - abilities.OnRowAbilities.*. [AvoidStarImport]
+[ERROR] C:\Users\livco\IdeaProjects\OOP_Tema1\.\src\commands\Utility.java:101:85: '3' is a magic number. [MagicNumber]
+[ERROR] C:\Users\livco\IdeaProjects\OOP_Tema1\.\src\commands\Utility.java:102:72: '3' is a magic number. [MagicNumber]
+[ERROR] C:\Users\livco\IdeaProjects\OOP_Tema1\.\src\errors\ErrorHandler.java:114:66: '3' is a magic number. [MagicNumber]
+[ERROR] C:\Users\livco\IdeaProjects\OOP_Tema1\.\src\tableplayers\GameConfig.java:34:65: '3' is a magic number. [MagicNumber]
+[ERROR] C:\Users\livco\IdeaProjects\OOP_Tema1\.\src\tableplayers\GameConstants.java:3:1: Utility classes should not have a public or default constructor. [HideUtilityClassConstructor]
+[ERROR] C:\Users\livco\IdeaProjects\OOP_Tema1\.\src\tableplayers\GameConstants.java:4:29: Name 'MaxCardsOnRow' must match pattern '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'. [ConstantName]
+[ERROR] C:\Users\livco\IdeaProjects\OOP_Tema1\.\src\tableplayers\GameConstants.java:5:29: Name 'MaxManaIncrement' must match pattern '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'. [ConstantName]
+[ERROR] C:\Users\livco\IdeaProjects\OOP_Tema1\.\src\tableplayers\GameConstants.java:6:29: Name 'StdHeroHealth' must match pattern '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'. [ConstantName]
+[ERROR] C:\Users\livco\IdeaProjects\OOP_Tema1\.\src\tableplayers\GameConstants.java:7:29: Name 'NumOfRows' must match pattern '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'. [ConstantName]
+[ERROR] C:\Users\livco\IdeaProjects\OOP_Tema1\.\src\tableplayers\Player.java:3:13: Using the '.*' form of import should be avoided - cards.*. [AvoidStarImport]
+[ERROR] C:\Users\livco\IdeaProjects\OOP_Tema1\.\src\tableplayers\Player.java:13:40: Using the '.*' form of import should be avoided - abilities.OnCardAbilities.*. [AvoidStarImport]
+[ERROR] C:\Users\livco\IdeaProjects\OOP_Tema1\.\src\tableplayers\Player.java:14:39: Using the '.*' form of import should be avoided - abilities.OnRowAbilities.*. [AvoidStarImport]
+[ERROR] C:\Users\livco\IdeaProjects\OOP_Tema1\.\src\tableplayers\Player.java:90:45: Inner assignments should be avoided. [InnerAssignment]
+[ERROR] C:\Users\livco\IdeaProjects\OOP_Tema1\.\src\tableplayers\Player.java:91:50: Inner assignments should be avoided. [InnerAssignment]
+[ERROR] C:\Users\livco\IdeaProjects\OOP_Tema1\.\src\tableplayers\Player.java:92:47: Inner assignments should be avoided. [InnerAssignment]
+[ERROR] C:\Users\livco\IdeaProjects\OOP_Tema1\.\src\tableplayers\Player.java:93:51: Inner assignments should be avoided. [InnerAssignment]
 Audit done.
-Checkstyle ends with 8 errors.
+Checkstyle ends with 16 errors.

@@ -45,9 +45,10 @@ public enum OnCardAbilities {
     };
 
     /**
-     *
-     * @param abilityMinion
-     * @param minion
+     * abstract function to be used by any ability implemented from now, processes the changes
+     * over the attacked minion
+     * @param abilityMinion the minion that has the ability to be used
+     * @param minion the minion on which the ability is used
      */
     public abstract void useAbility(Minion abilityMinion, Minion minion);
 }
