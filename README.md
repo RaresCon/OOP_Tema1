@@ -1,5 +1,7 @@
 # GwentStone - Rareș Constantin 
 
+![Banner](https://github.com/RaresCon/OOP_Tema1/blob/main/Screenshots/76e2ea94399c1741bf663ae3be9c6434.jpg)
+
 This is a game of cards set in a fantasy world, in which two heroes meet on a battlefield to fight for the land of *Truyssau*. There are multiple cards you can use during the game, but also multiple heroes to choose from.
 
 ## Installation
@@ -47,7 +49,7 @@ The Utility class is used for output into Json files, so it can be removed if an
 The players are represented by rows for each one, so the rows must be viewed mirrorred. So the row 0 of both players is the back row and same for row 1.\
 The game is made to function and recoded for **three rows**, not just two, and even more cards on one row. Some fine adjustments are needed for **row indexing**.
 
-![Players]()
+![Players](https://github.com/RaresCon/OOP_Tema1/blob/main/Screenshots/Capture.PNG)
 
 ## List of commands
 
