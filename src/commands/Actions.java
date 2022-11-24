@@ -6,7 +6,7 @@ import cards.Minion;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import errors.ErrorMessages;
+import errors.ErrorHandler;
 import fileio.ActionsInput;
 import tableplayers.GameConfig;
 
@@ -73,7 +73,8 @@ public enum Actions implements Command {
         @Override
         public void executeCommand(final ActionsInput action, final GameConfig gameConfig,
                                    final ArrayNode output) {
-            ObjectNode error = ErrorMessages.errorFactory(action, gameConfig);
+            ObjectNode error = ErrorHandler.ErrorFactory
+                                           .PLACE_CARD_ERR.checkError(action, gameConfig);
 
             if (error != null) {
                 output.add(error);
@@ -96,7 +97,8 @@ public enum Actions implements Command {
         @Override
         public void executeCommand(final ActionsInput action, final GameConfig gameConfig,
                                    final ArrayNode output) {
-            ObjectNode error = ErrorMessages.errorFactory(action, gameConfig);
+            ObjectNode error = ErrorHandler.ErrorFactory
+                                           .USE_ENV_CARD_ERR.checkError(action, gameConfig);
 
             if (error != null) {
                 output.add(error);
@@ -124,7 +126,8 @@ public enum Actions implements Command {
         @Override
         public void executeCommand(final ActionsInput action, final GameConfig gameConfig,
                                    final ArrayNode output) {
-            ObjectNode error = ErrorMessages.errorFactory(action, gameConfig);
+            ObjectNode error = ErrorHandler.ErrorFactory
+                                           .USE_CARD_ATTACK_ERR.checkError(action, gameConfig);
 
             if (error != null) {
                 output.add(error);
@@ -137,6 +140,10 @@ public enum Actions implements Command {
                     action.getCardAttacked().getY(), gameConfig);
 
             int xDefence = action.getCardAttacked().getX();
+
+            if (cardAttacker == null || cardAttacked == null) {
+                return;
+            }
 
             cardAttacker.minionAttack(cardAttacked);
             if (cardAttacked.getHealthStat() <= 0) {
@@ -151,7 +158,8 @@ public enum Actions implements Command {
         @Override
         public void executeCommand(final ActionsInput action, final GameConfig gameConfig,
                                    final ArrayNode output) {
-            ObjectNode error = ErrorMessages.errorFactory(action, gameConfig);
+            ObjectNode error = ErrorHandler.ErrorFactory
+                                           .USE_CARD_ABILITY_ERR.checkError(action, gameConfig);
 
             if (error != null) {
                 output.add(error);
@@ -168,6 +176,10 @@ public enum Actions implements Command {
 
             int xDefence = action.getCardAttacked().getX();
 
+            if (cardAttacker == null || cardAttacked == null) {
+                return;
+            }
+
             cardAttacker.useMinionAbility(cardAttacked);
             if (cardAttacked.getHealthStat() <= 0) {
                 gameConfig.getAttackedRow(xDefence).remove(cardAttacked);
@@ -181,7 +193,8 @@ public enum Actions implements Command {
         @Override
         public void executeCommand(final ActionsInput action, final GameConfig gameConfig,
                                    final ArrayNode output) {
-            ObjectNode error = ErrorMessages.errorFactory(action, gameConfig);
+            ObjectNode error = ErrorHandler.ErrorFactory
+                                           .ATTACK_HERO_ERR.checkError(action, gameConfig);
 
             if (error != null) {
                 output.add(error);
@@ -190,6 +203,10 @@ public enum Actions implements Command {
 
             Minion cardAttacker = Utility.getCardFromTable(action.getCardAttacker().getX(),
                                   action.getCardAttacker().getY(), gameConfig);
+
+            if (cardAttacker == null) {
+                return;
+            }
 
             cardAttacker.minionAttack(gameConfig.getInactivePlayer().getPlayerHero());
 
@@ -211,7 +228,8 @@ public enum Actions implements Command {
         @Override
         public void executeCommand(final ActionsInput action, final GameConfig gameConfig,
                                    final ArrayNode output) {
-            ObjectNode error = ErrorMessages.errorFactory(action, gameConfig);
+            ObjectNode error = ErrorHandler.ErrorFactory
+                                           .USE_HERO_ABILITY_ERR.checkError(action, gameConfig);
 
             if (error != null) {
                 output.add(error);

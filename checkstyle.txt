@@ -2,12 +2,10 @@ Starting audit...
 [ERROR] C:\Users\nitro\IdeaProjects\OOP_Tema1\.\src\cards\Hero.java:9:30: '30' is a magic number. [MagicNumber]
 [ERROR] C:\Users\nitro\IdeaProjects\OOP_Tema1\.\src\commands\Utility.java:101:85: '3' is a magic number. [MagicNumber]
 [ERROR] C:\Users\nitro\IdeaProjects\OOP_Tema1\.\src\commands\Utility.java:102:72: '3' is a magic number. [MagicNumber]
-[ERROR] C:\Users\nitro\IdeaProjects\OOP_Tema1\.\src\errors\ErrorMessages.java:47:5: Method length is 242 lines (max allowed is 150). [MethodLength]
-[ERROR] C:\Users\nitro\IdeaProjects\OOP_Tema1\.\src\errors\ErrorMessages.java:109:66: '3' is a magic number. [MagicNumber]
-[ERROR] C:\Users\nitro\IdeaProjects\OOP_Tema1\.\src\errors\ErrorMessages.java:194:17: switch without "default" clause. [MissingSwitchDefault]
+[ERROR] C:\Users\nitro\IdeaProjects\OOP_Tema1\.\src\errors\ErrorHandler.java:112:66: '3' is a magic number. [MagicNumber]
 [ERROR] C:\Users\nitro\IdeaProjects\OOP_Tema1\.\src\tableplayers\GameConfig.java:38:65: '3' is a magic number. [MagicNumber]
 [ERROR] C:\Users\nitro\IdeaProjects\OOP_Tema1\.\src\tableplayers\Player.java:3:13: Using the '.*' form of import should be avoided - cards.*. [AvoidStarImport]
 [ERROR] C:\Users\nitro\IdeaProjects\OOP_Tema1\.\src\tableplayers\Player.java:13:40: Using the '.*' form of import should be avoided - abilities.OnCardAbilities.*. [AvoidStarImport]
 [ERROR] C:\Users\nitro\IdeaProjects\OOP_Tema1\.\src\tableplayers\Player.java:14:39: Using the '.*' form of import should be avoided - abilities.OnRowAbilities.*. [AvoidStarImport]
 Audit done.
-Checkstyle ends with 10 errors.
+Checkstyle ends with 8 errors.
