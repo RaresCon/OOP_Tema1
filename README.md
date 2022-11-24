@@ -47,7 +47,7 @@ The Utility class is used for output into Json files, so it can be removed if an
 The players are represented by rows for each one, so the rows must be viewed mirrorred. So the row 0 of both players is the back row and same for row 1.\
 The game is made to function and recoded for **three rows**, not just two, and even more cards on one row. Some fine adjustments are needed for **row indexing**.
 
-![Players](https://drive.google.com/file/d/1E8B9w0UTZRRm0qh1IcZaoQMelsk6TF43/view?usp=share_link)
+![Players](https://imgur.com/a/fDAIOJF)
 
 ## List of commands
 
